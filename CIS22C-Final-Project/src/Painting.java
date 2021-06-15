@@ -12,7 +12,7 @@ public class Painting
 {
 	private final String title;
 	private final String author;
-	private final int idNumber;
+	private final String idNumber;
 	private final int year;
 	private double price;
 	private String description;
@@ -26,7 +26,7 @@ public class Painting
 	* @param price the price
 	* @param description the description
 	*/
-	public Painting(String title, String author, int idNumber, int year, double price, String description)
+	public Painting(String title, String author, String idNumber, int year, double price, String description)
 	{
 		this.title = title;
 		this.author = author;
@@ -46,7 +46,7 @@ public class Painting
 	{
 		this.title = title;
 		this.author = author;
-		idNumber = 0;
+		idNumber = "";
 		year = 0;
 		price = 0.0;
 		description = "";
@@ -57,7 +57,7 @@ public class Painting
 	* an ID # and empty values to everything else
     * @param idNumber the idNumber
     */
-	public Painting(int idNumber)
+	public Painting(String idNumber)
 	{
 		this.idNumber = idNumber;
 		this.title = "";
@@ -66,22 +66,7 @@ public class Painting
 		price = 0.0;
 		description = "";
 	}
-	
-	/**
-	* One-argument constructor that assigns
-	* a title and empty values to everything else
-    * @param title the title
-    */
-	public Painting(String title)
-	{
-		this.title = title;
-		this.idNumber = 0;
-		this.author = "";
-		year = 0;
-		price = 0.0;
-		description = "";
-	}
-	
+
 	/**
 	* Accesses the painting title
 	* @return the title
@@ -104,7 +89,7 @@ public class Painting
 	* Accesses the painting ID #
 	* @return the ID number
 	*/
-	public int getId()
+	public String getId()
 	{
 		return idNumber;
 	}
@@ -162,31 +147,46 @@ public class Painting
 	*/
 	@Override public String toString()
 	{
-		return title + "\n" + author + "\n" + idNumber + "\n" + year + "\n" + "Price: $" + price + "\n" + description + "\n";
+		DecimalFormat df = new DecimalFormat("##.00")
+		return title + "\n" + author + "\n" + idNumber + "\n" + year + "\n" + "Price: $" + df.format(price) + "\n" + description + "\n";
 	}
 	
 	/**
 	 * Compares this Painting to
 	 * another Object for equality
-	 * You must use the formula presented
-	 * in class for full credit (see Lesson 4)
 	 * @param o another Object
-	 * (MutualFund or otherwise)
-	 * @return whether o is a MutualFund
-	 * and has the same ticker as this MutualFund
+	 * (Painting or otherwise)
+	 * @return whether o is a Painting
+	 * and has the same idNumber as this Painting
 	 */
 	@Override public boolean equals(Object o) {
 		if(o == this) {
 			return true;
-		} else if (!(o instanceof MutualFund)) {
+		} else if (!(o instanceof Painting)) {
 			return false;
 		} else {
-			MutualFund mf = (MutualFund) o;
-			if (this.ticker != mf.ticker) {
+			Painting p = (Painting) o;
+			if (this.idNumber != p.getId()) {
 				return false;
 			}
 			return true;
 		}
+	}
+	
+	/**
+	 * Returns a consistent hash code for
+	 * each Painting by summing the Unicode values
+	 * of each character in the key
+	 * Key = idNumber
+	 * @return the hash code
+	 */
+	@Override public int hashCode() {
+		String key = idNumber;
+		int sum = 0;
+		for (int i = 0; i < key.length(); i++){
+			sum += (int)key.charAt(i);
+		}
+		return sum;
 	}
 }
 
