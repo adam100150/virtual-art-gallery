@@ -13,15 +13,15 @@ public class Heap<T> {
     }
     
     private int left(int i) {
-    	return i * 2 + 1;  	
+    	return i * 2;  	
     }
     
     private int right(int i) {
-    	return i * 2 + 2;
+    	return i * 2 + 1;
     }
     
     private int parent(int i) {
-    	return (i - 1) / 2;
+    	return i / 2;
     }
     
     
@@ -58,21 +58,21 @@ public class Heap<T> {
     }
     
     public void buildHeap() { 
-    	for(int i = (heap.size()/2 -1); i >= 0; i--) {
+    	for(int i = (heap.size()/2); i >= 0; i--) {
     		maxHeapify(i);
     	}
     }  
     
     public void insert(T newValue) {
     	heap.add(newValue);
-    	heapifyUp(heap.size()-1);
+    	heapifyUp(heap.size());
     	
     }
     
     public T pop() {
-    	swap(0, heap.size()-1);
-    	T temp = heap.get(heap.size()-1);
-    	heap.remove(heap.size()-1);
+    	swap(0, heap.size());
+    	T temp = heap.get(heap.size());
+    	heap.remove(heap.size());
     	maxHeapify(0);
     	return temp; // return the max value    	
     }
