@@ -1,8 +1,8 @@
 /*Painting.java
- * @author Nathan Brin
- * @author Adam Ashkenazi
- * @author Sihan
- * @author Alice
+ * @artist Nathan Brin
+ * @artist Adam Ashkenazi
+ * @artist Sihan
+ * @artist Alice
  * CIS 22C lab 6
  */
 
@@ -12,8 +12,7 @@ import java.util.Comparator;
 public class Painting 
 {
 	private final String title;
-	private final String author;
-	private final String idNumber;
+	private final String artist;
 	private final int year;
 	private double price;
 	private String description;
@@ -21,17 +20,15 @@ public class Painting
 	/**
 	* Constructor that assigns all values
 	* @param title the title
-	* @param author the author
-	* @param idNumber the idNumber
+	* @param artist the artist
 	* @param year the year
 	* @param price the price
 	* @param description the description
 	*/
-	public Painting(String title, String author, String idNumber, int year, double price, String description)
+	public Painting(String title, String artist, int year, double price, String description)
 	{
 		this.title = title;
-		this.author = author;
-		this.idNumber = idNumber;
+		this.artist = artist;
 		this.year = year;
 		this.price = price;
 		this.description = description;
@@ -39,15 +36,14 @@ public class Painting
 	
 	/**
 	* Two-argument constructor that assigns
-	* a name and author and empty values to everything else
+	* a name and artist and empty values to everything else
 	* @param Title for title
-	* @param Author for author
+	* @param artist for artist
 	*/
-	public Painting(String title, String author)
+	public Painting(String title, String artist)
 	{
 		this.title = title;
-		this.author = author;
-		idNumber = "";
+		this.artist = artist;
 		year = 0;
 		price = 0.0;
 		description = "";
@@ -56,13 +52,12 @@ public class Painting
 	/**
 	* One-argument constructor that assigns
 	* an ID # and empty values to everything else
-    * @param idNumber the idNumber
+    * @param title the title
     */
-	public Painting(String idNumber)
+	public Painting(String title)
 	{
-		this.idNumber = idNumber;
-		this.title = "";
-		this.author = "";
+		this.title = title;
+		this.artist = "";
 		year = 0;
 		price = 0.0;
 		description = "";
@@ -78,21 +73,12 @@ public class Painting
 	}
 	
 	/**
-	* Accesses the painting Author
-	* @return the author
+	* Accesses the painting artist
+	* @return the artist
 	*/
-	public String getAuthor()
+	public String getArtist()
 	{
-		return author;
-	}
-	
-	/**
-	* Accesses the painting ID #
-	* @return the ID number
-	*/
-	public String getId()
-	{
-		return idNumber;
+		return artist;
 	}
 	
 	/**
@@ -139,8 +125,7 @@ public class Painting
 	* Creates a String of the painting information
 	* in the format:
 	* <title>
-	* <author>
-	* <idNumber>
+	* <artist>
 	* <year>
 	* Price: $<price>
 	* <description>
@@ -149,7 +134,7 @@ public class Painting
 	@Override public String toString()
 	{
 		DecimalFormat df = new DecimalFormat("##.00");
-		return title + "\n" + author + "\n" + idNumber + "\n" + year + "\n" + "Price: $" + df.format(price) + "\n" + description + "\n";
+		return title + "\n" + artist + "\n" + year + "\n" + "Price: $" + df.format(price) + "\n" + description + "\n";
 	}
 	
 	/**
@@ -167,7 +152,7 @@ public class Painting
 			return false;
 		} else {
 			Painting p = (Painting) o;
-			if (this.idNumber != p.getId()) {
+			if (this.title != p.getTitle() || this.artist != p.getArtist()) {
 				return false;
 			}
 			return true;
@@ -182,7 +167,7 @@ public class Painting
 	 * @return the hash code
 	 */
 	@Override public int hashCode() {
-		String key = idNumber;
+		String key = title + artist;
 		int sum = 0;
 		for (int i = 0; i < key.length(); i++){
 			sum += (int)key.charAt(i);
