@@ -19,7 +19,6 @@ public class List<T> {
 			this.next = null;
 			this.prev = null;
 		}
-
 	}
 
 	private int length;
