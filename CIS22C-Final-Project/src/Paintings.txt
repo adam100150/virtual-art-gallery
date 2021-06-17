@@ -1,0 +1,54 @@
+Mona Lisa
+Leonardo da Vinci
+1503
+500
+
+The Starry Night
+Vincent Van Gogh
+1889
+678
+
+Girl with a Pearl Earring
+Johannes Vermeer
+1665
+434
+
+The Last Supper
+Leonardo da Vinci
+1495
+596
+
+Guernica
+Pablo Picasso
+1937
+465
+
+Les Demoiselles d'Avignon
+Pablo Picasso
+1907
+390
+
+The Great Wave off Kanagawa
+Hokusai
+1829
+478
+
+Nighthawks
+Edward Hopper
+1942
+2350
+
+Night Windows
+Edward Hopper
+1928
+1200
+
+Gas
+Edward Hopper
+1940
+1300
+
+The Scream
+Edvard Munch
+1893
+780
