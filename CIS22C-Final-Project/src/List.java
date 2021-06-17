@@ -1,7 +1,14 @@
+/**
+ * List.java
+ * @author Nathan Brin 
+ * @author Adam Ashkenazi
+ * CIS 22C, Lab 6
+ */
+
+
 import java.util.NoSuchElementException;
 
 public class List<T> {
-
 	private class Node {
 		private T data;
 		private Node next;
@@ -19,142 +26,147 @@ public class List<T> {
 	private Node last;
 	private Node iterator;
 
-	/**** CONSTRUCTOR ****/
+
+	/****CONSTRUCTORS****/
 
 	/**
-	 * Instantiates a new empty List
-	 * 
-	 * @postcondition a new, empty List created
+	 * Instantiates a new List with default values
+	 * @postcondition a new List object
 	 */
-	public List() {
-		first = last = iterator = null;
+	public List() { //default constructor
 		length = 0;
+		first = null;
+		last = null;
+		iterator = null;
 	}
 
 	/**
-	 * Instantiates a new List by copying another List
-	 * 
-	 * @param original the List to make a copy of
-	 * @postcondition a new List object, which is an identical but separate copy of
-	 *                the List original
+	 * Instantiates a new List with the same values as the input list
+	 * @param L a doubly linked list
+	 * @postcondition a new List object with the save values as the given object
 	 */
-	public List(List<T> original) {
-		if (original == null) {
-			return;
-		}
-		if (original.length == 0) {
-			length = 0;
-			first = null;
-			last = null;
-			iterator = null;
-		} else {
-			Node temp = original.first;
-			while (temp != null) {
-				addLast(temp.data);
-				temp = temp.next;
-			}
-			iterator = null;
-		}
-	}
+    public List(List<T> original) {
+        if (original == null) {
+            return;
+        }
+        if (original.length == 0) {
+            length = 0;
+            first = null;
+            last = null;
+            iterator = null;
+        } else {
+            Node temp = original.first;
+            while (temp != null) {
+                addLast(temp.data);
+                temp = temp.next;
+            }
+            iterator = null;
+        }
+    }
 
-	/**** ACCESSORS ****/
-
+	/****ACCESSORS****/
 	/**
 	 * Returns the value stored in the first node
-	 * 
-	 * @precondition  length !=0
-	 * @return the value stored at node first
-	 * @throws NoSuchElementException when precondition is violated
+	 * @precondition length != 0
+	 * @return the integer value stored at node first
+	 * @throws NoSuchElementException when the precondition is violated
 	 */
-	public T getFirst() throws NoSuchElementException {
+	public T getFirst() throws NoSuchElementException{
 		if (length == 0) {
-			throw new NoSuchElementException("getFirst: List is Empty. No data to access!");
+			throw new NoSuchElementException("getFirst: "
+					+ "List is Empty. No data to access!");
 		}
-		return first.data; // why do we return first.data and not first?
+		return first.data;
 	}
 
 	/**
 	 * Returns the value stored in the last node
-	 * @precondition  length !=0
-	 * @return the value stored in the node last
-	 * @throws NoSuchElementException when precondition is violated
+	 * @precondition length != 0
+	 * @return the integer value stored at node last
+	 * @throws NoSuchElementException when the precondition is violated
 	 */
-	public T getLast() throws NoSuchElementException {
+	public T getLast() throws NoSuchElementException{
 		if (length == 0) {
-			throw new NoSuchElementException("getLast: List is Empty. No data to access!");
+			throw new NoSuchElementException("getLast: "
+					+ "List is Empty. No data to access!");
 		}
-		return last.data; // why do we return last.data and not last?
+		return last.data;
 	}
 
 	/**
-	 * Returns the current length of the list
-	 * 
-	 * @return the length of the list from 0 to n
-	 */
+     * Returns whether the list is currently empty
+     * @return True if the list is empty, false otherwise
+     */
+	public boolean isEmpty() {
+		return length == 0;
+	}
+
+	/**
+     * Returns the current length of the list
+     * @return the length of the list from 0 to n
+     */
 	public int getLength() {
 		return length;
 	}
 
 	/**
-	 * Returns the iterator
-	 * 
-	 * @return the length of the list from 0 to n
+	 * Returns the data of the element pointed to by the iterator
+	 * @precondition iterator does not point to null
+	 * @return the data of the iterator
 	 */
 	public T getIterator() {
+		if(iterator == null) {
+			throw new NoSuchElementException("getIterator: " +
+					"Iterator element points to null so you cannot retrieve any data");
+		}
+
 		return iterator.data;
 	}
 
 	/**
-	 * Returns whether the list is currently empty
-	 * 
-	 * @return whether the list is empty
+	 * Returns whether the iterator is off the end of the list, i.e. is NULL
+	 * @return whether iterator is off end
 	 */
-	public boolean isEmpty() {
-		return length == 0;
-	}
-
-	// returns whether or not the iterator is off the end of the list, i.e. null
-	// @return whether the iterator is null
-	public Boolean offEnd() {
+	public boolean offEnd() {
 		return iterator == null;
 	}
 
-	/**** MUTATORS ****/
+	/****MUTATORS****/
 
 	/**
 	 * Creates a new first element
-	 * 
-	 * @param data the data to insert at the front of the list
-	 * @postcondition a new first node is created
+	 * @param data the data to insert at the
+	 * front of the list
+	 * @postcondition a new first element
 	 */
 	public void addFirst(T data) {
 		Node N = new Node(data);
-		if (length == 0)
-			first = last = N;
 
+		if (first == null) { // edge case: first is pointing to null
+			first = last = N;
+		}
 		else {
-			Node temp = first;
-			N.next = temp;
-			temp.prev = N;
+			N.next = first;
+			first.prev = N;
 			first = N;
 		}
+
 		length++;
 	}
 
 	/**
 	 * Creates a new last element
-	 * 
 	 * @param data the data to insert at the end of the list
-	 * @postcondition a new last node is created
+	 * @postcondition a new last element
 	 */
 	public void addLast(T data) {
 		Node N = new Node(data);
-		if (length == 0) {
+
+		if (last == null) { // edge case: last is pointing to null
 			first = last = N;
 		} else {
-			Node temp = last;
-			N.prev = temp;
-			temp.next = N;
+			last.next = N;
+			N.prev = last;
 			last = N;
 		}
 
@@ -162,230 +174,274 @@ public class List<T> {
 	}
 
 	/**
-	 * removes the element at the front of the list
-	 * 
-	 * @precondition !length ==0
-	 * @postcondition the first node is removed
-	 * @throws NoSuchElementException when precondition is violated
+	 * Removes the first elements in the list
+	 * @precondition list is not empty
+	 * @postcondition first element is removed
+	 * @throws a NoSuchElementException if list is empty
 	 */
-	public void removeFirst() throws NoSuchElementException {
-		if (length == 0) { // precondition
-			throw new NoSuchElementException("removeFirst: list is empty. Cannot remove.");
-		} else if (length == 1) { // edge case
+	public void removeFirst() throws NoSuchElementException{
+		if(isEmpty()) { // LENGTH == 0
+			throw new NoSuchElementException("removeFirst: " +
+					"First element is null so you cannot remove it");
+		}
+
+		if (length == 1) { // Edge case
 			first = last = iterator = null;
-		} else { // general case
-			if (iterator == first) { // edge case
+		}
+		else {	// length > 1
+			// Edge case
+			if (iterator == first) { //edge case involving iterator pointing to first node
 				iterator = null;
 			}
+
+			// General case
 			first = first.next;
 			first.prev = null;
 		}
+
 		length--;
 	}
 
 	/**
-	 * removes the element at the end of the list
-	 * 
-	 * @precondition !length ==0
-	 * @postcondition the last node is removed
-	 * @throws NoSuchElementException when precondition is violated
+	 * Removes the last element in the list
+	 * @precondition list is not empty
+	 * @postcondition last element is removed
+	 * @throws a NoSuchElementException if list is empty
 	 */
-	public void removeLast() throws NoSuchElementException {
-		if (length == 0)
-			throw new NoSuchElementException("removeLast():  no element to remove");
-		last = last.prev;
-		last.next = null;
+	public void removeLast() throws NoSuchElementException{
+		if(first == null) {
+			throw new NoSuchElementException("removeLast: " +
+					"Last element is null so you cannot remove it");
+		}
+
+		if (length == 1) { // edge case
+			first = last = iterator = null;
+		}
+		else {
+			if (iterator == last) { //edge case involving iterator pointing to last node
+				iterator = null;
+			}
+
+			// General case
+			last = last.prev;
+			last.next = null;
+
+		}
+
 		length--;
 	}
 
 	/**
-	 * moves the iterator to the beginning of the list
+	 * Moves iterator to the start of the list
+	 * @precondition length > 0
+	 * @postcondition iterator points to the first element
 	 */
 	public void placeIterator() {
+		if(first == null) {
+			throw new NoSuchElementException("placeIterator: " +
+					"List is empty");
+		}
+
 		iterator = first;
 	}
 
 	/**
-	 * removes the element currently referenced by the iterator
-	 * 
+	 * Moves the iterator up by one node
 	 * @precondition iterator != null
-	 * @throws NullPointerException when iterator is off end
-	 * @postcondition iterator will be null
+	 * @postcondition iterator points to the next element in the list
 	 */
-	public void removeIterator() throws NullPointerException {
-		if (iterator == null) { // precondition
-			throw new NullPointerException("removeIterator: iterator is off end.");
-		} else if (iterator == first) { // edge case
-			removeFirst(); // should set iterator to null in this case
-		} else if (iterator == last) { // edge case
-			removeLast(); // should set iterator to null in this case
-		} else { // general case
-			iterator.next.prev = iterator.prev;
-			iterator.prev.next = iterator.next;
-			iterator = null;
-			length--;
+	public void advanceIterator() {
+		if(iterator == null) {
+			throw new NullPointerException("advanceIterator: " +
+					"Iterator is off end");
 		}
 
-	}
-
-	/**
-	 * add data
-	 * 
-	 * @precondition iterator != null
-	 * @throws NullPointerException when iterator is off end
-	 * @postcondition iterator is not last
-	 */
-	public void addIterator(T data) throws NullPointerException {
-		if (offEnd()) {
-			throw new NullPointerException("addIterator:" + "Iterator is off end. cannot add.");
-		} else if (iterator == last)
-			addLast(data);
-
-		else {
-			Node N = new Node(data);
-			Node temp = iterator;
-			Node temp2 = iterator.next;
-			N.next = temp2;
-			temp.next = N;
-			temp2.prev = N;
-			N.prev = temp;
-		}
-	}
-
-	// Advances the iterator by one node in the list
-	// @precondition !offEnd()
-	// @throws NullPointerException when the precondition is vilated
-	public void advanceIterator() throws NullPointerException {
-		if (iterator == null) {
-			throw new NullPointerException("advanceIterator: " + "iterator is off the end of the list.");
-		}
 		iterator = iterator.next;
 	}
 
-	// moves the iterator down by one node
-	// @precondition !offEnd()
-	// @throws NullPointerException when the precondition is vilated
-	public void reverseIterator() throws NullPointerException {
-		if (iterator == null) {
-			throw new NullPointerException("reverseIterator: " + "iterator is off the end of the list.");
+	/**
+	 * Moves the iterator down by one node
+	 * @precondition iterator != null
+	 * @postcondition iterator points to the previous element in the list
+	 */
+	public void reverseIterator() {
+		if(iterator == null) {
+			throw new NullPointerException("reverseIterator: " +
+					"Iterator is off end");
 		}
+
 		iterator = iterator.prev;
 	}
 
 	/**
-	 * Determines whether two Lists have the same data in the same order accessor
-	 * 
-	 * @param L the List to compare to this List
-	 * @return whether the two Lists are equal
+	 * Removes the element that the iterator is pointing to in the list
+	 * @precondition iterator != null
+	 * @postcondition iterator points to null
+	 * @throws a NoSuchElementException if iterator points to null
+	 */
+	public void removeIterator() throws NoSuchElementException {
+		if(iterator == null) {
+			throw new NoSuchElementException("removeIterator: " +
+					"Iterator element is null so you cannot remove it");
+		}
+		else {
+			if (iterator == first) { //edge case involving iterator pointing to first node
+				removeFirst();
+			}
+			else if (iterator == last){ //edge case involving iterator pointing to last node
+				removeLast();
+			}
+			else { //general case
+				iterator.next.prev = iterator.prev;
+				iterator.prev.next = iterator.next;
+				iterator = null;
+				length--;
+			}
+		}
+	}
+
+	/**
+	 * Inserts an element after the node currently pointed to by the iterator
+	 * @precondition iterator != null
+	 * @postcondition a new node is added after the iterator
+	 * @throws NullPointerException if pointer is null
+	 */
+	public void addIterator(T data) throws NullPointerException {
+		if(iterator == null) {
+			throw new NullPointerException("addIterator: " +
+					"Iterator element is null so you cannot add an element after it");
+		}
+
+		if (iterator == last) { //edge case
+			addLast(data);
+		} else { //general case
+			Node N = new Node(data);
+			N.next = iterator.next;
+			iterator.next.prev = N;
+			iterator.next = N;
+			N.prev = iterator;
+
+			length++;
+		}
+
+	}
+
+	/****ADDITIONAL OPERATIONS****/
+
+	/**
+	 * Compares this list to another list to see if they contain the same data in the same order
+	 * @return true if the lists are equal and false otherwise
 	 */
 	@SuppressWarnings("unchecked")
-	@Override
-	public boolean equals(Object o) {
-		if (o == this) { // to check this two memories are the same?
+	@Override public boolean equals(Object obj) {
+
+		//check if the two variables reference the same place in memory
+		if (this == obj) {
 			return true;
-		} else if (!(o instanceof List)) {
+		}
+
+		// Check if obj is instance of List class
+		if (!(obj instanceof List)) {
 			return false;
-		} else {
-			List<T> L = (List<T>) o;// o is an object, this step is to convert o to List L
-			if (this.length != L.length) {
-				return false;
-			} else {
-				Node temp1 = this.first;
-				Node temp2 = L.first;
-				while (temp1 != null) { // Lists are same length
-					if (!(temp1.data.equals(temp2.data))) {
-						return false;
-					}
-					temp1 = temp1.next;
-					temp2 = temp2.next;
-				}
-				return true;
-			}
 		}
-	}
 
-	/**** ADDITIONAL OPERATIONS ****/
+		List<T> L = (List<T>) obj;
 
-	/**
-	 * List with each value on its own line At the end of the List a new line
-	 * 
-	 * @return the List as a String for display
-	 */
-	@Override
-	public String toString() {
-		String result = "";
-		Node temp = first;
-		while (temp != null) {
-			result += temp.data + " ";
-			temp = temp.next;
+		// Check lengths
+		if (this.length != L.length) {
+			return false;
 		}
-		return result + "\n";
-	}
 
-	/**
-	 * prints the contents of the linked list to the screen in the format #:
-	 * <element> followed by a newline
-	 * 
-	 * @return the List as a String for display
-	 */
-	public String printNumberedList() {
-		String result = "";
-		Node temp = first;
-		for(int i=1; temp != null; i++) {
-			result+= i + ". " + temp.data + "\n";
-			temp= temp.next;
-		}
-		return result + "\n";
-	}
-	//prints a linked list to the console in reverse order from last to first
-	//Iteratively (loop)
-	public void printReverse() {
-		Node temp= last;
-		while(temp != null) {
-			System.out.println(temp.data+ " ");
-			temp= temp.prev;
-		}
-		System.out.println();
-	}
-	
-	/**
-	* Points the iterator at first
-	* and then advances it to the
-	* specified index
-	* @param index the index where
-	* the iterator should be placed
-	* @precondition 0 < index <= length
-	* @throws IndexOutOfBoundsException
-	* when precondition is violated
-	*/
-	public void iteratorToIndex(int index) throws IndexOutOfBoundsException{
-	   //fill in here
-		if(index <0 && index > length)
-			throw new IndexOutOfBoundsException("iteratorToIndex out of bounds.");
-		for(int i=0; i< index;i++)
-			advanceIterator();
-	}
+		Node temp1 = this.first;
+		Node temp2 = L.first;
 
-	/**
-	* Searches the List for the specified
-	* value using the linear  search algorithm
-	* @param value the value to search for
-	* @return the location of value in the
-	* List or -1 to indicate not found
-	* Note that if the List is empty we will
-	* consider the element to be not found
-	* post: position of the iterator remains
-	* unchanged
-	*/
-	public int linearSearch(T value) {
-		iterator = first;
 
 		for (int i = 0; i < length; i++) {
-			if (iterator.data.equals(value)) {
-				return i;
+			if (temp1.data != temp2.data) {
+				return false;
 			}
-			iterator = iterator.next;
+			temp1 = temp1.next;
+			temp2 = temp2.next;
 		}
-		return -1;
+
+		return true;
 	}
+
+	/**
+	 * List with each value on its own line
+	 * At the end of the List a new line
+	 * @return the List as a String for display
+	 */
+	@Override public String toString() {
+		String result = "";
+		Node temp = first;
+
+		while(temp != null) {
+			result += temp.data + "\n";
+			temp = temp.next;
+		}
+
+		return result;
+	}
+
+	/**
+	 * Prints the contents of the linked list to the screen in the format #: <element> followed by a newline
+	 */
+	 public void printNumberedList() {
+		 Node temp = first;
+
+		for (int i = 1; i <= length; i++) {
+			System.out.println(i + ". " + temp.data);
+			temp = temp.next;
+		}
+	}
+
+    /**
+    * Points the iterator at first
+    * and then advances it to the
+    * specified index
+    * @param index the index where
+    * the iterator should be placed
+    * @precondition 0 < index <= length
+    * @throws IndexOutOfBoundsException
+    * when precondition is violated
+    */
+    public void iteratorToIndex(int index) throws IndexOutOfBoundsException{
+        if(index <= 0 || index > length)
+        {
+          throw new IndexOutOfBoundsException("iteratorToIndex(): iterator out of bounds.");
+        }
+        placeIterator();
+        for(int i = 1; i < index; i++)
+        {
+          advanceIterator();
+        }
+    }
+
+    /**
+    * Searches the List for the specified
+    * value using the linear search algorithm
+    * @param value the value to search for
+    * @return the location of value in the
+    * List or -1 to indicate not found
+    * Note that if the List is empty we will
+    * consider the element to be not found
+    * @postcondition: position of the iterator remains
+    * unchanged
+    */
+    public int linearSearch(T value) {
+      Node temp = first;
+       if (isEmpty()){
+         return -1;
+       } else {    	   
+         for (int i = 1; i <= length; i++){
+           if(temp.data.equals(value)){
+             return i;
+           }
+           temp = temp.next;
+         }
+         return -1;
+       }    
+    }
+
 }
