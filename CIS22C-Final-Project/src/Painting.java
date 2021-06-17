@@ -7,6 +7,7 @@
  */
 
 import java.text.DecimalFormat;
+import java.util.Comparator;
 
 public class Painting 
 {
@@ -147,7 +148,7 @@ public class Painting
 	*/
 	@Override public String toString()
 	{
-		DecimalFormat df = new DecimalFormat("##.00")
+		DecimalFormat df = new DecimalFormat("##.00");
 		return title + "\n" + author + "\n" + idNumber + "\n" + year + "\n" + "Price: $" + df.format(price) + "\n" + description + "\n";
 	}
 	
@@ -190,3 +191,28 @@ public class Painting
 	}
 }
 
+class NameComparator implements Comparator<Painting> {
+    /**
+   * Compares the two Paintings by name of the Painting
+   * uses the String compareTo method to make the comparison
+   * @param account1 the first painting
+   * @param account2 the second painting
+   */
+   @Override public int compare(Painting first, Painting second) {
+      return first.getTitle().compareTo(second.getTitle());
+   }
+}  //end class NameComparator
+
+class ValueComparator implements Comparator<Painting> {
+	   /**
+	   * Compares the two paintings by price
+	   * uses the static Double compare method to make the
+	   * comparison
+	   * @param account1 the first Painting
+	   * @param account2 the second Painting
+	   */
+	   @Override public int compare(Painting first, Painting second)
+	   {
+	      return Double.compare(first.getPrice(), second.getPrice());
+	   }
+	}
