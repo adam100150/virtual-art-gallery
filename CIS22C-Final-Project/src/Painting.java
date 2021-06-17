@@ -195,8 +195,8 @@ class NameComparator implements Comparator<Painting> {
     /**
    * Compares the two Paintings by name of the Painting
    * uses the String compareTo method to make the comparison
-   * @param account1 the first painting
-   * @param account2 the second painting
+   * @param first the first painting
+   * @param second the second painting
    */
    @Override public int compare(Painting first, Painting second) {
       return first.getTitle().compareTo(second.getTitle());
@@ -208,8 +208,8 @@ class ValueComparator implements Comparator<Painting> {
 	   * Compares the two paintings by price
 	   * uses the static Double compare method to make the
 	   * comparison
-	   * @param account1 the first Painting
-	   * @param account2 the second Painting
+	   * @param first the first Painting
+	   * @param second the second Painting
 	   */
 	   @Override public int compare(Painting first, Painting second)
 	   {
