@@ -27,9 +27,6 @@ public class Store {
 		
 		PriorityComparator c = new PriorityComparator();
 		orders = new Heap<>(100, c);		
-		
-		   //File file1 = new File("mutual_funds.txt");
-		   //File file2 = new File("customers.txt");	
 	      
 	      try {
 	    	  availablePainting();
@@ -39,7 +36,6 @@ public class Store {
 	    	  System.out.println(e);
 	    	  return;
 	      }     
-	      //userChoice(funds, accountValue, accountName);
 	      login();
 	   }
 		
