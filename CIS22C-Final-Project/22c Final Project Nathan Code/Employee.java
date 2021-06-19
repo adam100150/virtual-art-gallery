@@ -13,16 +13,7 @@ public class Employee extends Person {
 		this.userName = userName;
 		this.password = password;
 	}
-	
-	public void addProduct()
-	{
-		
-	}
-	
-	public void removeProduct()
-	{
-		
-	}
+
 	@Override
 	public String toString() {
 		return "Username: " + getUserName() + "\nUser Password: " + getPassword() + "\n";
