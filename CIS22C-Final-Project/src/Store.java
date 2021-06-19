@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-
-
 public class Store {
-	private HashTable<Painting> paintings;		
-	private HashTable<Customer> customers;
+	private HashTable<Painting> paintings;	//public 	
+	private HashTable<Customer> customers;  //public 
 	private HashTable<Employee> employees;
 	private Heap<Order> orders;
 	
@@ -38,8 +36,15 @@ public class Store {
 	      }     
 	      login();
 	   }
-		
-		
+	
+	public HashTable<Customer> getCustomers(){
+		return customers;
+	}
+	
+	public Heap<Order> getOrders(){
+		return orders;
+	}
+			
 	public void availablePainting() throws FileNotFoundException {
 		String title, artist, description;
 		  double price;
@@ -60,12 +65,10 @@ public class Store {
 	    	  }  	  
 	    	  paintings.insert(new Painting(title, artist, year, price, description));  
 	      }     
-	      input.close();	
-	
+	      input.close();		
 	}
 	
-	 public void readCustomersFile() throws FileNotFoundException{
-		 
+	 public void readCustomersFile() throws FileNotFoundException{		 
 		  String userName, password, firstName, lastName, email, address;
 		  double cash;
 		     
@@ -88,7 +91,6 @@ public class Store {
 	    		  input.nextLine();    		  
 	    	  }    	  
 	    	  customers.insert(new Customer(userName, password, firstName, lastName, email, address, cash));  
-	   
 	      }     
 	      input.close();	
 	 }
@@ -110,7 +112,6 @@ public class Store {
 		    	  employees.insert(new Employee(userName, password, firstName, lastName));  
 		      }     
 		      input.close();	
-
 		}
 		
 		public void login() {
@@ -156,8 +157,7 @@ public class Store {
 				   System.out.print("Enter your cash: ");
 				   cash = userInput.nextFloat();
 				   userInput.nextLine();
-				   
-				  				   
+				   				  				   
 				   newCustomer = new Customer(userName, password, firstName, lastName, 
 											  email, address, cash);
 				   customers.insert(newCustomer);		   
@@ -167,13 +167,12 @@ public class Store {
 				   lastName = newCustomer.getLastName();	   
 			   }
 			   System.out.println("\nWelcome, " + firstName + " " + lastName + "!\n\n");
-			   customerMenu(newCustomer);
-			
+			   customerMenu(newCustomer);			
 		}
 		
 		public void loginEmployee() {
 			Scanner userInput = new Scanner(System.in);
-			System.out.println("Welcome to Art Gallery!\n");
+			System.out.println("Welcome to the Art Gallery!\n");
 			   System.out.print("Please enter your user name: ");
 			   String userName = userInput.nextLine();
 			   System.out.print("Please enter your password: ");
@@ -248,21 +247,32 @@ public class Store {
 			  		}
 				}while(!(choice == 'X' || choice == 'x')); 
 		}
-					  		
-
-		
+					  				
 			
 		public void customerChoiceA(Customer customer) {
+			Order order;
+			String date;
+			int speed;
+			
 			Scanner userInput = new Scanner(System.in);
 			System.out.println("\nPlease select from the options below:\n");
 			   
 			paintings.printTable();	   
 			System.out.print("\nEnter the title of the painting to purchase: ");
 			String title = userInput.nextLine();
+			System.out.print("\nEnter the date of the painting to purchase: ");
+			date = userInput.nextLine();
+			System.out.print("\nEnter the shipping speed 1-10 slowest to fastest: ");
+			speed = userInput.nextInt();
+			userInput.nextLine();
+			
 
 			Painting painting = new Painting(title);	   
 			painting = paintings.get(painting);	   
 			customer.placeOrder(painting);
+			order = new Order(customer, date, speed);
+			orders.insert(order);
+			
 			System.out.println("\nYou successfully added the following painting to your order:\n");
 			System.out.println(painting);	   
 		}
@@ -302,11 +312,11 @@ public class Store {
 			  		choice = userInput.next().charAt(0);
 			  		
 			  		if(choice == 'A' || choice == 'a') {			  			
-			  			customer = employeeChoiceA(employee);
+			  			employeeChoiceA(employee);
 			  		}
 			  		
 			  		else if(choice == 'B'|| choice == 'b') {
-			  		    employeeChoiceB(employee, customer);
+			  			employees.printTable();
 			  		}			  
 
 			  		else if(choice == 'C'|| choice == 'c') {
@@ -327,9 +337,10 @@ public class Store {
 			
 		}
 		
-		public Customer employeeChoiceA(Employee employee) {
+		public void employeeChoiceA(Employee employee) {
 			Customer customer;
 			String firstName, lastName;
+			char choice;
 			
 			Scanner userInput = new Scanner(System.in);
 			
@@ -341,13 +352,6 @@ public class Store {
 			
 			customer = new Customer(firstName, lastName);
 			customers.get(customer);
-			
-			return customer;
-		}
-		
-		public void employeeChoiceB(Employee employeem, Customer customer) {			
-			char choice;
-			Scanner userInput = new Scanner(System.in);
 			
 			System.out.println("Choose: 1: Display Customer's Painting by Titel!");
 			System.out.println("Choose: 2: Display Customer's Painting by Value!");
@@ -361,8 +365,9 @@ public class Store {
 			}	
 			else {
 				   System.out.println("\nInvalid Choice!\n");	  
-		   } 			
+		   } 	
 		}
+		
 		
 		public void addRemoveArt() {
 			char choice;
@@ -417,3 +422,4 @@ public class Store {
 			paintings.remove(new Painting(title, artist));					
 		}
 }
+
