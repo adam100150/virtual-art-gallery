@@ -1,4 +1,11 @@
-
+/**
+ * Order.java
+ * @artist Nathan Brin
+ * @artist Adam Ashkenazi
+ * @artist Sihan Sun
+ * @artist Alice Zhang
+ * CIS 22C Final Project
+ */
 import java.util.Comparator;
 
 public class Order {
@@ -6,7 +13,6 @@ public class Order {
 	private String date;
 	private Painting orderedPainting;
 	private int shippingSpeed;
-	private int priority;
 	
 	/**CONSTRUCTORS*/
 	
@@ -74,14 +80,6 @@ public class Order {
 		return shippingSpeed;
 	}
 	
-	/**
-	 * Accesses the priority
-	 * @return the priorityOrder
-	 */
-	public int getPriority() {
-		return priority;
-	}
-	
 	/**MUTATORS*/
 	
 	/**
@@ -116,6 +114,27 @@ public class Order {
 		this.shippingSpeed = speed;
 	}
 	
+
+	@Override
+	public String toString() 
+	{
+		String ship = "";
+		if(shippingSpeed == 1)
+		{
+			ship = "Standard";
+		}
+		else if(shippingSpeed == 2)
+		{
+			ship = "Rushed";
+		}
+		else if(shippingSpeed == 3)
+		{
+			ship = "Overnight";
+		}
+		return  "\n" + orderedPainting.getTitle() + "\nCustomer: " + customer.getFirstName() + " " + customer.getLastName() + "\nDate: " + date
+				+ "\nShipping speed: " + ship + "\n";
+	}
+	
 }
 
 class PriorityComparator implements Comparator<Order> {
@@ -125,6 +144,6 @@ class PriorityComparator implements Comparator<Order> {
    * @param order2 the second Order
    */
    @Override public int compare(Order order1, Order order2) {
-      return Integer.compare(order1.getPriority(), order2.getPriority());
+      return order2.getDate().compareTo(order1.getDate());
    }
 }

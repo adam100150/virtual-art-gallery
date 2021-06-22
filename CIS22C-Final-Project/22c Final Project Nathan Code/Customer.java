@@ -1,4 +1,11 @@
-
+/**
+ * Customer.java
+ * @artist Nathan Brin
+ * @artist Adam Ashkenazi
+ * @artist Sihan Sun
+ * @artist Alice Zhang
+ * CIS 22C Final Project
+ */
 import java.text.DecimalFormat;
 
 public class Customer extends Person{
@@ -6,33 +13,13 @@ public class Customer extends Person{
 	private String address;
 	private double cash;
 	
-	//private BST<Painting> paintings;
 	private BST<Painting> myPaintingsByTitle = new BST<>();
 	private BST<Painting> myPaintingsByValue = new BST<>();
 	
 	
-	
-	
-	
-	//printPaintingByArtist
-	//printPaintingByValue
-	
-	/*
-	private BST<String> artTitle = new BST<> ();
-	private BST<String> artist = new BST<> ();
-	private BST<Double> artValue = new BST<>();
-	private List<Order> orders = new List<> ();
-	*/	
-	
 	public Customer(String userName, String password) {
 		super(userName, password, "", "");
 
-		//email = "undefine";
-		//address = "undefine";
-		//city = "undefine";
-		//state = "undefine";
-		//zip = 0;
-		//cash = 0.0;
 	}
 		
 	public Customer(String userName, String password, String firstName, String lastName, 
@@ -41,7 +28,6 @@ public class Customer extends Person{
 		this.email = email;
 		this.address = address;
 		this.cash = cash;
-	
 	}
 	
 	public String getEmail() {
@@ -52,28 +38,14 @@ public class Customer extends Person{
 		return address;
 	}
 	
-	/*
-	public String getCity() {
-		return city;
-	}
-	
-	public String getState() {
-		return state;
-	}
-	public int getZip() {
-		return zip;
-	}
-	*/
 	public double getCash() {
 		return cash;
 	}
 
-	
 	public boolean passwordMatch(String anotherPassword) {		
 		return anotherPassword.equals(this.getPassword());
 	}
 		
-	
 	public void setEmail(String email) {
 		this.email = email;
 	}
@@ -81,18 +53,6 @@ public class Customer extends Person{
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-	/*
-	public void setCity(String city) {
-		this.city = city;
-	}
-	public void setState(String state) {
-		this.state = state;
-	}
-	public void setZip(int zip) {
-		this.zip = zip;
-	}
-	*/
 	
 	public void addPainting(Painting painting) 
 	{
@@ -134,19 +94,22 @@ public class Customer extends Person{
 			return false;
 		else {
 			Customer c = (Customer) o;
-			return this.getFirstName().equals(c.getFirstName()) && this.getLastName().equals(c.getLastName())
-				&& this.getUserName().equals(c.getUserName())&& this.address.equals(c.address);
+			return this.getUserName().equals(c.getUserName()) && this.getPassword().equals(c.getPassword());
 		}
 	}
-	
-	/*
-	@Override 
-	public int hashCode() {
-		String key = address + city + state;
+	/**
+	 * Returns a consistent hash code for
+	 * each Customer by summing the Unicode values
+	 * of each character in the key
+	 * Key = email + password
+	 * @return the hash code
+	 */
+	@Override public int hashCode() {
+		String key = getUserName() + getPassword();
 		int sum = 0;
-		for(int i = 0; i< key.length(); i++)
-			sum += (int) key.charAt(i);
-		return sum;		
+		for (int i = 0; i < key.length(); i++){
+			sum += (int)key.charAt(i);
+		}
+		return sum;
 	}
-	*/
 }

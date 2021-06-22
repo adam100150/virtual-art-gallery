@@ -1,3 +1,11 @@
+/**
+ * Heap.java
+ * @artist Nathan Brin
+ * @artist Adam Ashkenazi
+ * @artist Sihan Sun
+ * @artist Alice Zhang
+ * CIS 22C Final Project
+ */
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -23,6 +31,10 @@ public class Heap<T> {
     	return i / 2;
     }
     
+    public boolean isEmpty()
+    {
+    	return heap.isEmpty();
+    }
     
     public void maxHeapify(int i) {  //heapify down 
     	int l = left(i);
@@ -64,14 +76,14 @@ public class Heap<T> {
     
     public void insert(T newValue) {
     	heap.add(newValue);
-    	heapifyUp(heap.size());
+    	heapifyUp(heap.size()-1);
     	
     }
     
     public T pop() {
-    	swap(0, heap.size());
-    	T temp = heap.get(heap.size());
-    	heap.remove(heap.size());
+    	swap(0, heap.size()-1);
+    	T temp = heap.get(heap.size()-1);
+    	heap.remove(heap.size()-1);
     	maxHeapify(0);
     	return temp; // return the max value    	
     }

@@ -1,8 +1,10 @@
 /**
  * List.java
- * @author Nathan Brin 
- * @author Adam Ashkenazi
- * CIS 22C, Lab 6
+ * @artist Nathan Brin
+ * @artist Adam Ashkenazi
+ * @artist Sihan Sun
+ * @artist Alice Zhang
+ * CIS 22C Final Project
  */
 
 
@@ -19,6 +21,7 @@ public class List<T> {
 			this.next = null;
 			this.prev = null;
 		}
+
 	}
 
 	private int length;
@@ -435,7 +438,8 @@ public class List<T> {
          return -1;
        } else {    	   
          for (int i = 1; i <= length; i++){
-           if(temp.data.equals(value)){
+           if(temp.data.equals(value))
+           {
              return i;
            }
            temp = temp.next;

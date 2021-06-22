@@ -3,7 +3,7 @@
  * @artist Adam Ashkenazi
  * @artist Sihan
  * @artist Alice
- * CIS 22C lab 6
+ * CIS 22C Final Lab
  */
 
 import java.text.DecimalFormat;
@@ -51,7 +51,7 @@ public class Painting
 	
 	/**
 	* One-argument constructor that assigns
-	* an ID # and empty values to everything else
+	* a title
     * @param title the title
     */
 	public Painting(String title)
@@ -62,7 +62,21 @@ public class Painting
 		price = 0.0;
 		description = "";
 	}
-
+	
+	/**
+	* One-argument constructor that assigns
+	* a price
+    * @param price the price
+    */
+	public Painting(double price)
+	{
+		this.title = "";
+		this.artist = "";
+		year = 0;
+		this.price = price;
+		description = "";
+	}
+	
 	/**
 	* Accesses the painting title
 	* @return the title
@@ -134,7 +148,7 @@ public class Painting
 	@Override public String toString()
 	{
 		DecimalFormat df = new DecimalFormat("##.00");
-		return title + "\n" + artist + "\n" + year + "\n" + "Price: $" + df.format(price) + "\n" + description + "\n";
+		return title + "\n" + artist + "\n" + year + "\n" + "Price: $" + df.format(price) + "\n" + description + "\n\n";
 	}
 	
 	/**

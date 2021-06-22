@@ -1,8 +1,13 @@
-import java.text.DecimalFormat;
-
+/**
+ * Employee.java
+ * @artist Nathan Brin
+ * @artist Adam Ashkenazi
+ * @artist Sihan Sun
+ * @artist Alice Zhang
+ * CIS 22C Final Project
+ */
 public class Employee extends Person {
-	private String userName;
-	private String password;
+
 	
 	public Employee(String userName, String password, String firstName, String lastName) {
 		super(userName, password, firstName, lastName);
@@ -10,8 +15,7 @@ public class Employee extends Person {
 	
 	public Employee(String userName, String password)
 	{
-		this.userName = userName;
-		this.password = password;
+		super(userName, password, "", "");
 	}
 
 	@Override

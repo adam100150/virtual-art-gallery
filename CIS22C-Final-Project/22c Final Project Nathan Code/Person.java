@@ -1,4 +1,11 @@
-
+/**
+ * CustomerInterface.java
+ * @artist Nathan Brin
+ * @artist Adam Ashkenazi
+ * @artist Sihan Sun
+ * @artist Alice Zhang
+ * CIS 22C Final Project
+ */
 public abstract class Person {
 	
 	private String userName;
