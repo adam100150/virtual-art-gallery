@@ -6,6 +6,11 @@
  * @artist Alice Zhang
  * CIS 22C Final Project
  */
+
+/*
+ * TODO:
+ * Cash
+ */
 import java.text.DecimalFormat;
 
 public class Customer extends Person{

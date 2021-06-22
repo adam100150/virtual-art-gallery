@@ -167,6 +167,7 @@ public class Store
 		
 		Customer temp = order.getCustomer();
 		Painting tempPainting = order.getOrderContents();
+		temp.addPainting(tempPainting);
 		Double price = tempPainting.getPrice();
 		temp.updateCash(-price);
 		
@@ -243,7 +244,7 @@ public class Store
 			{
 				Order tempOrder = unshippedOrders.getIterator();
 				if(tempOrder.getCustomer().equals(cust))
-				temp.addLast(tempOrder);
+					temp.addLast(tempOrder);
 				unshippedOrders.advanceIterator();
 			}
 			temp.printNumberedList();
