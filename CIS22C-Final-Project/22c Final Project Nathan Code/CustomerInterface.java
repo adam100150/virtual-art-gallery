@@ -52,9 +52,6 @@ public class CustomerInterface {
 		double cash;
 		String fileName = "";
 		
-		NameComparator nC = new NameComparator();
-		ValueComparator vC = new ValueComparator();
-		
 		Scanner input = new Scanner(System.in);
 		System.out.println("Welcome to One-To-One Painting Replicas! \n");
 		
@@ -72,9 +69,9 @@ public class CustomerInterface {
 			System.out.print("\nPassword: ");
 			password = input.nextLine();
 			currentCustomer = new Customer(userName, password);
-			if(Store.customers.contains(currentCustomer))
+			if(store.containsCustomer(currentCustomer))
 			{
-				currentCustomer = Store.customers.get(currentCustomer);
+				currentCustomer = store.searchCustomer(currentCustomer);
 				System.out.println("\nWelcome, " + currentCustomer.getFirstName() + " " + currentCustomer.getLastName() + "!\n\n");
 			}
 			else
@@ -98,7 +95,7 @@ public class CustomerInterface {
 				currentCustomer.setEmail(email);
 				currentCustomer.setAddress(address);
 				currentCustomer.setCash(cash);
-				Store.customers.insert(currentCustomer);
+				store.addCustomer(currentCustomer);
 				fileName = "Customers.txt";
 				try {
 					BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
@@ -133,7 +130,7 @@ public class CustomerInterface {
 						{
 							System.out.println("Enter the name of the painting you are looking for.");
 							stringInput = input.nextLine();
-							currentPainting = Store.painting_name.search(new Painting(stringInput), nC);
+							currentPainting = store.searchPaintingName(new Painting(stringInput));
 							if(currentPainting != null)
 							{
 								System.out.println(currentPainting);
@@ -148,7 +145,7 @@ public class CustomerInterface {
 							System.out.println("Enter the price of the painting you are looking for.");
 							cash = input.nextDouble();
 							input.nextLine();
-							currentPainting = Store.painting_name.search(new Painting(cash), vC);
+							currentPainting = store.searchPaintingPrice(new Painting(cash));
 							if(currentPainting != null)
 							{
 								System.out.println(currentPainting);
@@ -173,11 +170,11 @@ public class CustomerInterface {
 						
 						if(intInput == 1)
 						{
-							Store.painting_name.inOrderPrint();
+							store.printPaintingsByName();
 						}
 						else if(intInput == 2)
 						{
-							Store.painting_value.inOrderPrint();
+							store.printPaintingsByValue();
 						}
 						else
 						{
@@ -189,7 +186,7 @@ public class CustomerInterface {
 						System.out.println("What is the title of the painting that you would like to purchase?");
 						stringInput = input.nextLine();
 						stringInput = input.nextLine();
-						currentPainting = Store.painting_name.search(new Painting(stringInput), nC);
+						currentPainting = store.searchPaintingName(new Painting(stringInput));
 						if(currentPainting != null)
 						{
 							System.out.println("The painting you are ordering is: ");
@@ -303,7 +300,7 @@ public class CustomerInterface {
 						System.out.println("Enter the password of the customer: ");
 						password = input.nextLine();
 						currentCustomer = new Customer(userName, password);
-						currentCustomer = Store.customers.get(currentCustomer);
+						currentCustomer = store.searchCustomer(currentCustomer);
 						if(currentCustomer == null)
 						{
 							System.out.println("Could not find that customer.\n");
@@ -313,7 +310,7 @@ public class CustomerInterface {
 					}
 					else if(userInput == 'B')
 					{
-						Store.customers.printTable();
+						store.displayCustomers();
 					}
 					else if(userInput == 'C')
 					{
@@ -328,11 +325,11 @@ public class CustomerInterface {
 						input.nextLine();
 						if(intInput == 1)
 						{
-							Store.painting_name.inOrderPrint();
+							store.printPaintingsByName();
 						}
 						else if (intInput == 2)
 						{
-							Store.painting_value.inOrderPrint();
+							store.printPaintingsByValue();
 						}
 						else
 						{
@@ -392,7 +389,7 @@ public class CustomerInterface {
 						System.out.println("What is the name of the painting to be removed?");
 						String title = input.nextLine();
 						currentPainting = new Painting(title);
-						currentPainting = Store.painting_name.search(currentPainting, nC);
+						currentPainting = store.searchPaintingName(currentPainting);
 						
 						store.removePainting(currentPainting);
 						

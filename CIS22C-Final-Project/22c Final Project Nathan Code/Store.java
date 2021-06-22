@@ -15,9 +15,9 @@ public class Store
 	private  final int NUM_ORDERS = 100;
 	private PriorityComparator pc;
 	
-	public static BST<Painting> painting_name = new BST<>();
-	public  static BST<Painting> painting_value = new BST<>();
-	public  static HashTable<Customer> customers; 
+	private static BST<Painting> painting_name = new BST<>();
+	private  static BST<Painting> painting_value = new BST<>();
+	private  static HashTable<Customer> customers; 
 	private Heap<Order> ordersStandard; 
 	private Heap<Order> ordersRushed; 
 	private Heap<Order> ordersOvernight; 
@@ -129,7 +129,14 @@ public class Store
 	      }
 	      input.close();	
 	}
-	
+	public Painting searchPaintingName(Painting painting)
+	{
+		return painting_name.search(painting, nC);
+	}
+	public Painting searchPaintingPrice(Painting painting)
+	{
+		return painting_name.search(painting, vC);
+	}
 	public void printPaintingsByName()
 	{
 		painting_name.inOrderPrint();
@@ -144,12 +151,22 @@ public class Store
 	{
 		return customers.get(cust);
 	}
-	
+	public boolean containsCustomer(Customer Cust)
+	{
+		return customers.contains(Cust);
+	}
 	public void displayCustomer(Customer cust)
 	{
 		System.out.print(customers.get(cust));
 	}
-	
+	public void displayCustomers()
+	{
+		customers.printTable();
+	}
+	public void addCustomer(Customer cust)
+	{
+		customers.insert(cust);
+	}
 	public void placeOrder(Order order)
 	{
 		if(order.getShippingSpeed() == 3)
