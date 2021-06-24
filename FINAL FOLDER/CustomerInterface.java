@@ -261,7 +261,6 @@ public class CustomerInterface {
 							try {
 								BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
 								PrintWriter out = new PrintWriter(writer);
-								out.println();
 								out.println(timeStamp);
 								out.println(currentCustomer.getUserName());
 								out.println(currentCustomer.getPassword());
