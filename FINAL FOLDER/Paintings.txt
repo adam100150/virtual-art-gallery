@@ -22,12 +22,6 @@ Leonardo da Vinci
 596
 The Last Supper is the final meal shared by Jesus and his disciples in an upper room in Jerusalem, the occasion of the institution of the Eucharist.
 
-Guernica
-Pablo Picasso
-1937
-465
-Guernica shows the tragedies of war and the suffering it inflicts upon individuals, particularly innocent civilians.
-
 Les Demoiselles d'Avignon
 Pablo Picasso
 1907
@@ -93,3 +87,9 @@ Jan van Eyck
 1434
 330
 A man and a woman hold hands in an interior setting, with a window behind him and a bed behind her in natural symbolism of fifteenth century marital roles.
+
+Creation
+Bob Ross
+2021
+2000.0
+Bob Ross's creation.
