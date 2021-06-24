@@ -3,7 +3,7 @@ jackyJ
 Jacky Jason
 jackyJ@gmail.com
 4393 palo alto avenue Palo Alto, California 94024
-2610.0
+7000
 gina256
 password3924
 Gina Gomes
@@ -34,3 +34,15 @@ Bob Pants
 pants_bob@gmail.com
 1234 atYourDoor Avenue Los Angeles, CA 95123
 50000
+Bobby
+bobby123
+Bob Roberts
+BobRoberts@gmail.com
+123 Avenue LA, CA 9400
+4000
+Bob
+Password
+Bob Roberts
+123@gmail.com
+123 avenue Los Gatos, ca
+4000

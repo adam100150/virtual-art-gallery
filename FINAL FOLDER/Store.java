@@ -16,8 +16,8 @@ public class Store
 	private PriorityComparator pc;
 
 	private static BST<Painting> painting_name = new BST<>();
-	private  static BST<Painting> painting_value = new BST<>();
-	private  static HashTable<Customer> customers;
+	private static BST<Painting> painting_value = new BST<>();
+	private static HashTable<Customer> customers;
 	private Heap<Order> ordersStandard;
 	private Heap<Order> ordersRushed;
 	private Heap<Order> ordersOvernight;
