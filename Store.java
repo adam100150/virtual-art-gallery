@@ -170,9 +170,6 @@ public class Store
 	public void placeOrder(Order order)
 	{
 		Customer temp = order.getCustomer();
-		if (temp.getCash() < order.getOrderContents().getPrice()) {
-			System.out.println("Customer doesn't have enough money in account");
-		} else {
 			if(order.getShippingSpeed() == 3)
 			{
 				ordersOvernight.insert(order);
@@ -192,7 +189,7 @@ public class Store
 			temp.updateCash(-price);
 
 			unshippedOrders.addLast(order);
-		}
+
 	}
 
 	public void shipOrder()

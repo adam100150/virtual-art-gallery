@@ -37,7 +37,7 @@ public class Painting
 	/**
 	* Two-argument constructor that assigns
 	* a name and artist and empty values to everything else
-	* @param Title for title
+	* @param title for title
 	* @param artist for artist
 	*/
 	public Painting(String title, String artist)
@@ -147,8 +147,7 @@ public class Painting
 	*/
 	@Override public String toString()
 	{
-		DecimalFormat df = new DecimalFormat("##.00");
-		return title + "\n" + artist + "\n" + year + "\n" + "Price: $" + df.format(price) + "\n" + description + "\n\n";
+		return title + "\n" + artist + "\n" + year + "\n" + price + "\n" + description + "\n\n";
 	}
 	
 	/**

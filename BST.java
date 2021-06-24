@@ -341,7 +341,6 @@ public class BST<T>{
 					root = node;
 				}
 				else {
-					System.out.println("remvoe 4.7");
 					node = node.left;
 				}
 				
@@ -443,4 +442,5 @@ public class BST<T>{
       System.out.println(node.data + " ");
       System.out.println();
     }
+
   }
