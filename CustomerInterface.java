@@ -535,9 +535,9 @@ public class CustomerInterface {
 					printDefaultEmployee();
 					userInput = input.next().charAt(0);
 				}
-			}
 				System.out.println("\nGoodbye!");
 				input.close();
+			}
 		}
 
 		public static void printDefaultGuest()
