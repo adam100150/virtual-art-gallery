@@ -124,11 +124,11 @@ public class Store
 			Order tempOrder = new Order(tempCust, date, tempPaint, speed,ship);
 			tempCust.addOrder(tempOrder);
 			
-			if(speed == 1)
+			if(speed == 1 && ship!= true)
 				ordersStandard.insert(tempOrder);
-			else if(speed == 2)
+			else if(speed == 2 && ship!= true)
 				ordersRushed.insert(tempOrder);
-			else if(speed == 3)
+			else if(speed == 3 && ship!= true)
 				ordersOvernight.insert(tempOrder);
 			
 			if(ship == true)
