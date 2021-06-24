@@ -232,8 +232,8 @@ public class CustomerInterface {
 						System.out.println("The painting you are ordering is: ");
 						System.out.println(currentPainting);
 						System.out.println("What kind of shipping would you like?");
-						System.out.println("(1) Standard");
-						System.out.println("(2) Rush");
+						System.out.println("(1) Standard 5-10 buisness days");
+						System.out.println("(2) Rush 2-3 business days");
 						System.out.println("(3) Overnight");
 
 						int speedIntInput = input.nextInt();
@@ -365,6 +365,8 @@ public class CustomerInterface {
 				printDefaultGuest();
 				userInput = input.next().charAt(0);
 			}
+			System.out.println("\nGoodbye!");
+			input.close();
 		}
 
 		if(loginIntInput == 3) //Employee Interface
