@@ -455,8 +455,6 @@ public class CustomerInterface {
 						try {
 							BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
 							PrintWriter out = new PrintWriter(writer);
-							out.println();
-							out.println();
 							out.println(title);
 							out.println(artist);
 							out.println(year);
