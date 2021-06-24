@@ -42,7 +42,7 @@ public class CustomerInterface {
 			e.printStackTrace();
 		}
 
-		int loginIntInput;
+		int loginIntInput = 0;
 		char userInput;
 		String stringInput;
 		Customer currentCustomer = new Customer();
@@ -60,10 +60,14 @@ public class CustomerInterface {
 		System.out.println("(2) Create new Customer Account");
 		System.out.println("(3) Login as an Employee");
 		System.out.println("(4) Log in as Guest");
-		loginIntInput = input.nextInt();
-		input.nextLine();
+		
+		String test = input.nextLine();
+		if(test.equals("1")|| test.equals("2") ||test.equals("3") || test.equals("4"))
+		     loginIntInput = Integer.parseInt(test);
+		else
+			System.out.println("Incorrect input.");
 
-
+		
 		switch (loginIntInput){
 			case 1: //Login as an existing Customer, if login info is in correct, loop until customer is found
 				boolean customerFound = false;
@@ -241,15 +245,15 @@ public class CustomerInterface {
 						} else {
 							String timeStamp = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
 							if (speedIntInput == 1) {
-								currentOrder = new Order(currentCustomer, timeStamp, currentPainting, loginIntInput);
+								currentOrder = new Order(currentCustomer, timeStamp, currentPainting, loginIntInput, false);
 								store.placeOrder(currentOrder);
 								System.out.println("Painting ordered! You can expect your painting within the next 5-10 business days.\n");
 							} else if (speedIntInput == 2) {
-								currentOrder = new Order(currentCustomer, timeStamp, currentPainting, loginIntInput);
+								currentOrder = new Order(currentCustomer, timeStamp, currentPainting, loginIntInput, false);
 								store.placeOrder(currentOrder);
 								System.out.println("Painting ordered! You can expect your painting within the next 2-3 business days.\n");
 							} else if (speedIntInput == 3) {
-								currentOrder = new Order(currentCustomer, timeStamp, currentPainting, loginIntInput);
+								currentOrder = new Order(currentCustomer, timeStamp, currentPainting, loginIntInput, false);
 								store.placeOrder(currentOrder);
 								System.out.println("Painting ordered! You can expect your painting to be shipped overnight.\n");
 							}
@@ -258,11 +262,12 @@ public class CustomerInterface {
 								BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
 								PrintWriter out = new PrintWriter(writer);
 								out.println();
+								out.println(timeStamp);
 								out.println(currentCustomer.getUserName());
 								out.println(currentCustomer.getPassword());
-								out.println(timeStamp);
 								out.println(currentPainting.getTitle());
-								out.print(speedIntInput);
+								out.println(speedIntInput);
+								out.print(false);
 								out.close();
 							} catch (IOException e) {
 								e.printStackTrace();
@@ -448,30 +453,16 @@ public class CustomerInterface {
 						store.addPainting(currentPainting);
 
 						fileName = "Paintings.txt";
-						File tempFile = new File("temptxtfile.txt");
-						try
-						{
-							BufferedReader reader = new BufferedReader(new FileReader(fileName));
-							BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile, true));
+						try {
+							BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
 							PrintWriter out = new PrintWriter(writer);
-							String currentLine;
-
-							while((currentLine = reader.readLine()) != null)
-							{
-								if(currentLine.equals(title) || currentLine.equals(currentPainting.getArtist()) ||  currentLine.equals(String.valueOf(currentPainting.getYear())) || currentLine.equals(String.valueOf(currentPainting.getPrice())) || currentLine.equals(currentPainting.getDescription()))
-								{
-									reader.readLine();
-								}
-                            else
-                            	{
-									out.println(currentLine);
-								}
-							}
-
-							File actualFile = new File(fileName);
-							tempFile.renameTo(actualFile);
-							actualFile.delete();
-							reader.close();
+							out.println();
+							out.println();
+							out.println(title);
+							out.println(artist);
+							out.println(year);
+							out.println(price);
+							out.print(description);
 							out.close();
 						}
 						catch(IOException e)

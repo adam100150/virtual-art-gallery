@@ -105,27 +105,33 @@ public class Store
 	public void buildOrders() throws FileNotFoundException {
 		String user, password, painting, date;
 		int speed;
+		boolean ship;
 
 		File file = new File("Orders.txt");
 		Scanner input = new Scanner(file);
 		while(input.hasNextLine())
 		{
+			date = input.nextLine();
 			user = input.nextLine();
 			password = input.nextLine();
-			date = input.nextLine();
 			painting = input.nextLine();
 			speed = input.nextInt();
+			ship = input.nextBoolean();
 			if(input.hasNextLine())
 				input.nextLine();
 			Customer tempCust = customers.get(new Customer(user, password));
 			Painting tempPaint = painting_name.search(new Painting(painting), nC);
 			if(speed == 1)
-				ordersStandard.insert(new Order(tempCust, date, tempPaint, speed));
+				ordersStandard.insert(new Order(tempCust, date, tempPaint, speed,ship));
 			else if(speed == 2)
-				ordersRushed.insert(new Order(tempCust, date, tempPaint, speed));
+				ordersRushed.insert(new Order(tempCust, date, tempPaint, speed,ship));
 			else if(speed == 3)
-				ordersOvernight.insert(new Order(tempCust, date, tempPaint, speed));
-			unshippedOrders.addLast(new Order(tempCust, date, tempPaint, speed));
+				ordersOvernight.insert(new Order(tempCust, date, tempPaint, speed,ship));
+			
+			if(ship == true)
+				shippedOrders.addLast(new Order(tempCust, date, tempPaint, speed,ship));
+			else
+				unshippedOrders.addLast(new Order(tempCust, date, tempPaint, speed,ship));
 		}
 		input.close();
 	}
@@ -201,7 +207,60 @@ public class Store
 			currentCust.addPainting(currentOrder.getOrderContents());
 			System.out.println("\nOrder Shipped: " + currentOrder);
 			shippedOrders.addLast(currentOrder);
-			unshippedOrders.removeFirst();
+			int index = unshippedOrders.linearSearch(currentOrder);
+			unshippedOrders.iteratorToIndex(index);
+			unshippedOrders.removeIterator();
+			currentOrder.ship();
+			
+			String fileName = "Orders.txt";
+			File tempFile = new File("tempfile.txt");
+			try {
+				BufferedReader reader = new BufferedReader(new FileReader(fileName));
+				BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+				PrintWriter out = new PrintWriter(writer);
+				String currentLine;
+
+				while ((currentLine = reader.readLine()) != null) {
+					if (currentLine.equals(currentOrder.getDate())) {
+						reader.readLine();
+						reader.readLine();
+						reader.readLine();
+						reader.readLine();
+						reader.readLine();
+					} else {
+						out.println(currentLine);
+					}
+				}
+				reader.close();
+				out.close();
+
+				reader = new BufferedReader(new FileReader(tempFile));
+				writer = new BufferedWriter(new FileWriter(fileName));
+				out = new PrintWriter(writer);
+
+				while ((currentLine = reader.readLine()) != null) {
+					out.println(currentLine);
+				}
+				reader.close();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			fileName = "Orders.txt";
+			try {
+				BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+				PrintWriter out = new PrintWriter(writer);
+				out.println(currentOrder.getDate());
+				out.println(currentCust.getUserName());
+				out.println(currentCust.getPassword());
+				out.println(currentOrder.getOrderContents().getTitle());
+				out.println(currentOrder.getShippingSpeed());
+				out.print(currentOrder.isShipped());
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		else if(!ordersRushed.isEmpty())
 		{
@@ -210,7 +269,60 @@ public class Store
 			currentCust.addPainting(currentOrder.getOrderContents());
 			System.out.println("\nOrder Shipped: " + currentOrder);
 			shippedOrders.addLast(currentOrder);
-			unshippedOrders.removeFirst();
+			int index = unshippedOrders.linearSearch(currentOrder);
+			unshippedOrders.iteratorToIndex(index);
+			unshippedOrders.removeIterator();
+			currentOrder.ship();
+			
+			String fileName = "Orders.txt";
+			File tempFile = new File("tempfile.txt");
+			try {
+				BufferedReader reader = new BufferedReader(new FileReader(fileName));
+				BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+				PrintWriter out = new PrintWriter(writer);
+				String currentLine;
+
+				while ((currentLine = reader.readLine()) != null) {
+					if (currentLine.equals(currentOrder.getDate())) {
+						reader.readLine();
+						reader.readLine();
+						reader.readLine();
+						reader.readLine();
+						reader.readLine();
+					} else {
+						out.println(currentLine);
+					}
+				}
+				reader.close();
+				out.close();
+
+				reader = new BufferedReader(new FileReader(tempFile));
+				writer = new BufferedWriter(new FileWriter(fileName));
+				out = new PrintWriter(writer);
+
+				while ((currentLine = reader.readLine()) != null) {
+					out.println(currentLine);
+				}
+				reader.close();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			fileName = "Orders.txt";
+			try {
+				BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+				PrintWriter out = new PrintWriter(writer);
+				out.println(currentOrder.getDate());
+				out.println(currentCust.getUserName());
+				out.println(currentCust.getPassword());
+				out.println(currentOrder.getOrderContents().getTitle());
+				out.println(currentOrder.getShippingSpeed());
+				out.print(currentOrder.isShipped());
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		else if(!ordersStandard.isEmpty())
 		{
@@ -219,7 +331,60 @@ public class Store
 			currentCust.addPainting(currentOrder.getOrderContents());
 			System.out.println("\nOrder Shipped: " + currentOrder);
 			shippedOrders.addLast(currentOrder);
-			unshippedOrders.removeFirst();
+			int index = unshippedOrders.linearSearch(currentOrder);
+			unshippedOrders.iteratorToIndex(index);
+			unshippedOrders.removeIterator();
+			currentOrder.ship();
+			
+			String fileName = "Orders.txt";
+			File tempFile = new File("tempfile.txt");
+			try {
+				BufferedReader reader = new BufferedReader(new FileReader(fileName));
+				BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+				PrintWriter out = new PrintWriter(writer);
+				String currentLine;
+
+				while ((currentLine = reader.readLine()) != null) {
+					if (currentLine.equals(currentOrder.getDate())) {
+						reader.readLine();
+						reader.readLine();
+						reader.readLine();
+						reader.readLine();
+						reader.readLine();
+					} else {
+						out.println(currentLine);
+					}
+				}
+				reader.close();
+				out.close();
+
+				reader = new BufferedReader(new FileReader(tempFile));
+				writer = new BufferedWriter(new FileWriter(fileName));
+				out = new PrintWriter(writer);
+
+				while ((currentLine = reader.readLine()) != null) {
+					out.println(currentLine);
+				}
+				reader.close();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			fileName = "Orders.txt";
+			try {
+				BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+				PrintWriter out = new PrintWriter(writer);
+				out.println(currentOrder.getDate());
+				out.println(currentCust.getUserName());
+				out.println(currentCust.getPassword());
+				out.println(currentOrder.getOrderContents().getTitle());
+				out.println(currentOrder.getShippingSpeed());
+				out.print(currentOrder.isShipped());
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		else
 			System.out.println("No orders to ship.");

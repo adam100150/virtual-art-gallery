@@ -18,6 +18,7 @@ public class Order {
 	private Painting orderedPainting;
 	private int shippingSpeed;
 	private Date priorityDate;
+	private boolean shipped;
 	
 	/**CONSTRUCTORS*/
 	
@@ -30,6 +31,7 @@ public class Order {
 		this.date = "";
 		this.orderedPainting = null;
 		this.shippingSpeed = 0;
+		shipped = false;
 	}
 	
 	
@@ -43,12 +45,12 @@ public class Order {
 	 * Assigns content to orderContents
 	 * Assigns speed to shippingSpeed
 	 */
-	public Order(Customer cust, String date, Painting painting, int speed) {
+	public Order(Customer cust, String date, Painting painting, int speed, boolean ship) {
 		this.customer = cust;
 		this.date = date;
 		this.orderedPainting = painting;
 		this.shippingSpeed = speed;
-
+		this.shipped = ship;
 		try {
 			this.priorityDate = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss").parse(date);
 		} catch (ParseException e){
@@ -132,10 +134,42 @@ public class Order {
 		this.shippingSpeed = speed;
 	}
 	
-
+	public boolean isShipped()
+	{
+		return shipped;
+	}
+	
+	public void setShipStatus(boolean status)
+	{
+		shipped = status;
+	}
+	
+	public void ship()
+	{
+		shipped = true;
+	}
+	
+	@Override public boolean equals(Object o) {
+		if(o == this) {
+			return true;
+		} else if (!(o instanceof Order)) {
+			return false;
+		} else {
+			Order p = (Order) o;
+			if (this.date != p.getDate()) {
+				return false;
+			}
+			return true;
+		}
+	}
+	
+	
 	@Override
 	public String toString() 
 	{
+		String shippingStatus = "Not yet shipped.";
+		if(isShipped())
+			shippingStatus = "Shipped!";
 		String ship = "";
 		if(shippingSpeed == 1)
 		{
@@ -150,7 +184,7 @@ public class Order {
 			ship = "Overnight";
 		}
 		return  "\n" + orderedPainting.getTitle() + "\nCustomer: " + customer.getFirstName() + " " + customer.getLastName() + "\nDate: " + date
-				+ "\n" + customer.getAddress() + "\nShipping speed: " + ship + "\n";
+				+ "\n" + customer.getAddress() + "\nShipping speed: " + ship + "\n" + "Shipping Status: " + shippingStatus + "\n";
 	}
 	
 }
