@@ -32,11 +32,6 @@ public class Customer extends Person{
 	public Customer(String userName, String password) {
 		super(userName, password, "", "");
 	}
-
-	//Customer constructor for guest
-	public Customer(String address){
-		this.address = address;
-	}
 		
 	//Constuctor with all values given
 	public Customer(String userName, String password, String firstName, String lastName, String email, String address, double cash) {

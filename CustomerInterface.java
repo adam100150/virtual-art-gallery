@@ -233,8 +233,8 @@ public class CustomerInterface {
 						System.out.println("The painting you are ordering is: ");
 						System.out.println(currentPainting);
 						System.out.println("What kind of shipping would you like?");
-						System.out.println("(1) Standard");
-						System.out.println("(2) Rush");
+						System.out.println("(1) Standard 5-10 buisness days");
+						System.out.println("(2) Rush 2-3 business days");
 						System.out.println("(3) Overnight");
 
 						int speedIntInput = input.nextInt();
@@ -242,6 +242,7 @@ public class CustomerInterface {
 
 						if (currentCustomer.getCash() < currentPainting.getPrice()) {
 							System.out.println("Customer doesn't have enough money in account");
+							System.out.println("Money left: " + currentCustomer.getCash());
 						} else {
 							String timeStamp = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
 							if (speedIntInput == 1) {
@@ -366,6 +367,8 @@ public class CustomerInterface {
 				printDefaultGuest();
 				userInput = input.next().charAt(0);
 			}
+			System.out.println("\nGoodbye!");
+			input.close();
 		}
 
 		if(loginIntInput == 3) //Employee Interface
@@ -456,7 +459,6 @@ public class CustomerInterface {
 						try {
 							BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
 							PrintWriter out = new PrintWriter(writer);
-							out.println();
 							out.println();
 							out.println(title);
 							out.println(artist);
