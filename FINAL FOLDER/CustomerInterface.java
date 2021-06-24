@@ -113,7 +113,6 @@ public class CustomerInterface {
 				try {
 					BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
 					PrintWriter out = new PrintWriter(writer);
-					out.println();
 					out.println(userName);
 					out.println(password);
 					out.println(firstName + " " + lastName);
@@ -242,6 +241,7 @@ public class CustomerInterface {
 
 						if (currentCustomer.getCash() < currentPainting.getPrice()) {
 							System.out.println("Customer doesn't have enough money in account");
+							System.out.println("Money left: " + currentCustomer.getCash());
 						} else {
 							String timeStamp = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
 							if (speedIntInput == 1) {
