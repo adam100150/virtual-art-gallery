@@ -480,6 +480,10 @@ public class Store
 
 	public void viewShippedOrders(Customer cust)
 	{
+		if(shippedOrders.isEmpty())
+			System.out.println("No orders to show.");
+		else
+		{
 			List<Order> temp = new List<>();
 			shippedOrders.placeIterator();
 			for(int i = 1; i <= shippedOrders.getLength(); i++)
@@ -493,6 +497,7 @@ public class Store
 				System.out.println("No shipped orders.");
 			else
 				temp.printNumberedList();
+		}
 	}
 	public void addPainting(Painting painting)
 	{
