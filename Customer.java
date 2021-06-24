@@ -14,6 +14,8 @@ public class Customer extends Person{
 	private String address;
 	private double cash;
 	
+	private List<Order> orders = new List<>();
+	
 	private BST<Painting> myPaintingsByTitle = new BST<>();
 	private BST<Painting> myPaintingsByValue = new BST<>();
 
@@ -94,11 +96,19 @@ public class Customer extends Person{
 		myPaintingsByValue.inOrderPrint();
 	}
 	
+	public void addOrder(Order order)
+	{
+		orders.addLast(order);
+	}
 	
 	@Override
-	public String toString() {
-		return "Name: " + getFirstName() + " " + getLastName() + "\nUserName: " + getUserName() + "\nTotal Cash: $"
+	public String toString() 
+	{
+		String result = "\nName: " + getFirstName() + " " + getLastName() + "\nUserName: " + getUserName() + "\nTotal Cash: $"
 				+ new DecimalFormat("###,###,###.##").format(cash)+ "\n";
+		if(!orders.isEmpty())
+			result += "\nOrder History:\n" + orders + "\n";
+		return result;
 	}
 	
 	@Override

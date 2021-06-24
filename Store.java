@@ -121,17 +121,20 @@ public class Store
 				input.nextLine();
 			Customer tempCust = customers.get(new Customer(user, password));
 			Painting tempPaint = painting_name.search(new Painting(painting), nC);
+			Order tempOrder = new Order(tempCust, date, tempPaint, speed,ship);
+			tempCust.addOrder(tempOrder);
+			
 			if(speed == 1)
-				ordersStandard.insert(new Order(tempCust, date, tempPaint, speed,ship));
+				ordersStandard.insert(tempOrder);
 			else if(speed == 2)
-				ordersRushed.insert(new Order(tempCust, date, tempPaint, speed,ship));
+				ordersRushed.insert(tempOrder);
 			else if(speed == 3)
-				ordersOvernight.insert(new Order(tempCust, date, tempPaint, speed,ship));
+				ordersOvernight.insert(tempOrder);
 			
 			if(ship == true)
-				shippedOrders.addLast(new Order(tempCust, date, tempPaint, speed,ship));
+				shippedOrders.addLast(tempOrder);
 			else
-				unshippedOrders.addLast(new Order(tempCust, date, tempPaint, speed,ship));
+				unshippedOrders.addLast(tempOrder);
 		}
 		input.close();
 	}
@@ -167,7 +170,7 @@ public class Store
 	}
 	public void displayCustomers()
 	{
-		customers.printTable();
+		System.out.println(customers);
 	}
 	public void addCustomer(Customer cust)
 	{
@@ -193,8 +196,49 @@ public class Store
 			temp.addPainting(tempPainting);
 			Double price = tempPainting.getPrice();
 			temp.updateCash(-price);
-
 			unshippedOrders.addLast(order);
+			temp.addOrder(order);
+			
+			String fileName = "Customers.txt";
+			File tempFile = new File("tempfileC.txt");
+			try {
+				BufferedReader reader = new BufferedReader(new FileReader(fileName));
+				BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+				PrintWriter out = new PrintWriter(writer);
+				String currentLine;
+
+				while ((currentLine = reader.readLine()) != null) {
+					if (currentLine.equals(temp.getUserName())) {
+						out.println(currentLine);
+						currentLine = reader.readLine();
+						out.println(currentLine);
+						currentLine = reader.readLine();
+						out.println(currentLine);
+						currentLine = reader.readLine();
+						out.println(currentLine);
+						currentLine = reader.readLine();
+						out.println(currentLine);
+						currentLine = reader.readLine();
+						out.println(temp.getCash());
+					} else {
+						out.println(currentLine);
+					}
+				}
+				reader.close();
+				out.close();
+
+				reader = new BufferedReader(new FileReader(tempFile));
+				writer = new BufferedWriter(new FileWriter(fileName));
+				out = new PrintWriter(writer);
+
+				while ((currentLine = reader.readLine()) != null) {
+					out.println(currentLine);
+				}
+				reader.close();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
 	}
 
@@ -436,12 +480,6 @@ public class Store
 
 	public void viewShippedOrders(Customer cust)
 	{
-		if(shippedOrders.isEmpty())
-		{
-			System.out.println("No orders to show.");
-		}
-		else
-		{
 			List<Order> temp = new List<>();
 			shippedOrders.placeIterator();
 			for(int i = 1; i <= shippedOrders.getLength(); i++)
@@ -451,8 +489,10 @@ public class Store
 					temp.addLast(tempOrder);
 				shippedOrders.advanceIterator();
 			}
-			temp.printNumberedList();
-		}
+			if(temp.isEmpty())
+				System.out.println("No shipped orders.");
+			else
+				temp.printNumberedList();
 	}
 	public void addPainting(Painting painting)
 	{
