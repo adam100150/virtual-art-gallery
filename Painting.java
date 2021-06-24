@@ -147,7 +147,8 @@ public class Painting
 	*/
 	@Override public String toString()
 	{
-		return title + "\n" + artist + "\n" + year + "\n" + price + "\n" + description + "\n\n";
+		DecimalFormat df = new DecimalFormat("##.00");
+		return title + "\n" + artist + "\n" + year + "\n" + "Price: $" + df.format(price) + "\n" + description + "\n\n";
 	}
 	
 	/**

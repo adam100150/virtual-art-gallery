@@ -79,7 +79,7 @@ public class CustomerInterface {
 						currentCustomer = store.searchCustomer(currentCustomer);
 						System.out.println("\nWelcome, " + currentCustomer.getFirstName() + " " + currentCustomer.getLastName() + "!\n\n");
 					} else {
-						System.out.println("\nLogin failed. Please try again.");
+						System.out.println("\nLogin failed. Please try again.\n");
 					}
 				} while(!(customerFound));
 				break;
@@ -138,7 +138,7 @@ public class CustomerInterface {
 						currentEmployee = employees.get(currentEmployee);
 						System.out.println("\nWelcome, " + currentEmployee.getFirstName() + " " + currentEmployee.getLastName() + "!\n\n");
 					} else {
-						System.out.print("\nLogin failed. Please try again.");
+						System.out.println("\nLogin failed. Please try again.\n");
 					}
 				} while (!employeeFound);
 				break;
@@ -336,7 +336,7 @@ public class CustomerInterface {
 						if (currentPainting != null) {
 							System.out.println(currentPainting);
 						} else {
-							System.out.println("Sorry we do not have that painting at the moment.");
+							System.out.println("Sorry we do not have that painting at the moment.\n");
 						}
 					} else {
 						System.out.println("Invalid choice.");
@@ -356,68 +356,8 @@ public class CustomerInterface {
 						System.out.println("Invalid choice.");
 					}
 				}
-
-				else if(userInput == 'C')
-				{
-					System.out.println("What is the title of the painting that you would like to purchase?");
-					input.nextLine();
-					stringInput = input.nextLine();
-					currentPainting = store.searchPaintingName(new Painting(stringInput));
-
-					if(currentPainting != null)
-					{
-						System.out.println("The painting you are ordering is: ");
-						System.out.println(currentPainting);
-						currentCustomer.setCash(currentPainting.getPrice());
-
-						System.out.println("What kind of shipping would you like?");
-						System.out.println("(1) Standard");
-						System.out.println("(2) Rush");
-						System.out.println("(3) Overnight");
-
-						int speedIntInput = input.nextInt();
-						input.nextLine();
-
-							String timeStamp = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
-							if(speedIntInput == 1)
-							{
-								currentOrder = new Order(currentCustomer, timeStamp, currentPainting, speedIntInput);
-								store.placeOrder(currentOrder);
-								System.out.println("Painting ordered! You can expect your painting within the next 5-10 business days.\n");
-							}
-							else if(speedIntInput == 2)
-							{
-								currentOrder = new Order(currentCustomer, timeStamp, currentPainting, speedIntInput);
-								store.placeOrder(currentOrder);
-								System.out.println("Painting ordered! You can expect your painting within the next 2-3 business days.\n");
-							}
-							else if(speedIntInput == 3)
-							{
-								currentOrder = new Order(currentCustomer, timeStamp, currentPainting, speedIntInput);
-								store.placeOrder(currentOrder);
-								System.out.println("Painting ordered! You can expect your painting to be shipped overnight.\n");
-							}
-							fileName = "Orders.txt";
-							try {
-								BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
-								PrintWriter out = new PrintWriter(writer);
-								out.println();
-								out.println(currentCustomer.getUserName());
-								out.println(currentCustomer.getPassword());
-								out.println(timeStamp);
-								out.println(currentPainting.getTitle());
-								out.print(speedIntInput);
-								out.close();
-							}
-							catch(IOException e)
-							{
-								e.printStackTrace();
-							}
-					}
-					else {
-						System.out.println("Sorry we do not have that painting at the moment.");
-					}
-				}
+				else
+					System.out.println("\nInvalid Choice. Please enter A or B or X to exit.\n");
 				printDefaultGuest();
 				userInput = input.next().charAt(0);
 			}
@@ -540,7 +480,8 @@ public class CustomerInterface {
 						}
 
 					}
-					else if(userInput == 'G') {
+					else if(userInput == 'G') 
+					{
 						input.nextLine();
 						System.out.println("What is the name of the painting to be removed?");
 						String title = input.nextLine();
@@ -587,15 +528,16 @@ public class CustomerInterface {
 							}
 						}
 					}
+					else
+					{
+						System.out.println("\nInvalid menu option. Please enter A-G or X to exit.\n");
+					}
+					printDefaultEmployee();
+					userInput = input.next().charAt(0);
 				}
-
+			}
 				System.out.println("\nGoodbye!");
 				input.close();
-			}
-			else
-			{
-				System.out.println("Invalid login. Goodbye.");
-			}
 		}
 
 		public static void printDefaultGuest()
@@ -603,7 +545,6 @@ public class CustomerInterface {
 			System.out.println("Please select from the following options: \n");
 			System.out.println("A. Search for a painting");
 			System.out.println("B. List available paintings ");
-			System.out.println("C. Place an Order ");
 			System.out.println("X. Exit \n");
 			System.out.print("Enter your choice: ");
 		}
