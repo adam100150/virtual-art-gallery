@@ -12,5 +12,4 @@ This is a project that simulates an art gallery. It is a console application tha
 * Employees can ship orders
 
 ## To Be Added 
-Using Regular Expressions to verify emails and addresses
-A user interface
+Using Regular Expressions to verify emails and addresses and a user interface
