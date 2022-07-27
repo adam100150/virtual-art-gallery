@@ -9,7 +9,7 @@
 
 import java.text.DecimalFormat;
 
-public class Customer extends Person{
+public class Customer extends User {
 	private String email;
 	private String address;
 	private double cash;
@@ -18,22 +18,8 @@ public class Customer extends Person{
 	
 	private BST<Painting> myPaintingsByTitle = new BST<>();
 	private BST<Painting> myPaintingsByValue = new BST<>();
-
-	public Customer() {
-		super();
-	}
-
-	public Customer(String firstName, String lastName, String address)
-	{
-		super("","",firstName, lastName);
-		this.address = address;
-	}
-
-	public Customer(String userName, String password) {
-		super(userName, password, "", "");
-	}
 		
-	//Constuctor with all values given
+	//Constructor with all values given
 	public Customer(String userName, String password, String firstName, String lastName, String email, String address, double cash) {
 		super(userName, password, firstName, lastName);
 		this.email = email;
@@ -41,7 +27,10 @@ public class Customer extends Person{
 		this.cash = cash;
 	}
 
-	
+	public Customer() {
+	}
+
+
 	public String getEmail() {
 		return email;
 	}
@@ -52,10 +41,6 @@ public class Customer extends Person{
 	
 	public double getCash() {
 		return cash;
-	}
-
-	public boolean passwordMatch(String anotherPassword) {		
-		return anotherPassword.equals(this.getPassword());
 	}
 		
 	public void setEmail(String email) {

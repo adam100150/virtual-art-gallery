@@ -6,16 +6,11 @@
  * @artist Alice Zhang
  * CIS 22C Final Project
  */
-public class Employee extends Person {
+public class Employee extends User {
 
 	
 	public Employee(String userName, String password, String firstName, String lastName) {
 		super(userName, password, firstName, lastName);
-	}
-	
-	public Employee(String userName, String password)
-	{
-		super(userName, password, "", "");
 	}
 
 	@Override

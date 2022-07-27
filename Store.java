@@ -17,7 +17,10 @@ public class Store
 
 	private static BST<Painting> painting_name = new BST<>();
 	private static BST<Painting> painting_value = new BST<>();
-	private static HashTable<Customer> customers;
+
+	HashMap<String, Customer> customers;
+	HashMap<String, Employee> employees;
+
 	private Heap<Order> ordersStandard;
 	private Heap<Order> ordersRushed;
 	private Heap<Order> ordersOvernight;
@@ -33,7 +36,7 @@ public class Store
 		pc = new PriorityComparator();
 		nC = new NameComparator();
 		vC = new ValueComparator();
-		customers = new HashTable<>(NUM_CUSTOMERS);
+		customers = new HashMap<>();
 		ordersStandard = new Heap<>(NUM_ORDERS, pc);
 		ordersRushed = new Heap<>(NUM_ORDERS, pc);
 		ordersOvernight = new Heap<>(NUM_ORDERS, pc);
@@ -75,7 +78,7 @@ public class Store
 		input.close();
 	}
 
-	public void readCustomersFile() throws FileNotFoundException{
+	void readCustomersFile() throws FileNotFoundException{
 
 		String userName, password, firstName, lastName, email, address;
 		double cash;
@@ -97,7 +100,28 @@ public class Store
 			if(input.hasNextLine()) {
 				input.nextLine();
 			}
-			customers.insert(new Customer(userName, password, firstName, lastName, email, address, cash));
+			customers.putIfAbsent(userName, new Customer(userName, password, firstName, lastName, email, address, cash));
+		}
+		input.close();
+	}
+
+	void readEmployeesFile() throws FileNotFoundException{
+		String username, password, firstName, lastName;
+
+		File file = new File("Employees.txt");
+		Scanner input = new Scanner(file);
+		while(input.hasNextLine()) {
+			username = input.nextLine();
+			password = input.nextLine();
+			firstName = input.next();
+			lastName = input.next();
+			input.nextLine();
+
+			if(input.hasNextLine()) {
+				input.nextLine();
+			}
+
+			employees.putIfAbsent(username, new Employee(username, password, firstName, lastName));
 		}
 		input.close();
 	}
@@ -119,7 +143,7 @@ public class Store
 			ship = input.nextBoolean();
 			if(input.hasNextLine())
 				input.nextLine();
-			Customer tempCust = customers.get(new Customer(user, password));
+			Customer tempCust = customers.get(user);
 			Painting tempPaint = painting_name.search(new Painting(painting), nC);
 			Order tempOrder = new Order(tempCust, date, tempPaint, speed,ship);
 			tempCust.addOrder(tempOrder);
@@ -160,22 +184,26 @@ public class Store
 	{
 		return customers.get(cust);
 	}
-	public boolean containsCustomer(Customer Cust)
+	public boolean containsCustomer(String username)
 	{
-		return customers.contains(Cust);
+		return customers.containsKey(username);
 	}
 	public void displayCustomer(Customer cust)
 	{
-		System.out.print(customers.get(cust));
+		System.out.print(customers.get(cust.getUserName()));
 	}
 	public void displayCustomers()
 	{
 		System.out.println(customers);
 	}
-	public void addCustomer(Customer cust)
-	{
-		customers.insert(cust);
+	public void addCustomer(Customer cust) {
+		customers.putIfAbsent(cust.getUserName(), cust);
 	}
+
+	Customer getCustomer(String username) {
+		return customers.get(username);
+	}
+
 	public void placeOrder(Order order)
 	{
 		Customer temp = order.getCustomer();
