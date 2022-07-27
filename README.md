@@ -1,4 +1,4 @@
-# CIS22C-Final-Project
+# Virtual Art Gallery Project
 This is a project that simulates an art gallery. It is a console application that uses a variety of data structures like a Binary Search Tree (BST), a Hash Table, a Heap and Linked List. The application loads users and emloyees from a text file data base. You can log into the console as an employee, a costumer or a guest. The user can list all avaliable paintings in ascending order by title or price. 
 
 ## Here is some more specific functionality
