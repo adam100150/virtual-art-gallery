@@ -96,7 +96,7 @@ public abstract class User {
 			checkForValidInput("([0-9]*)\\.([0-9]*)", cash, "Cash Amount", input);
 			currentCustomer.setCash(Double.parseDouble(cash));
 
-			if (store.containsCustomer(currentCustomer.getUserName())) {
+			if (store.customers.containsKey(currentCustomer.getUserName())) {
 				throw new ArtGalleryException("Customer already exists in database");
 			}
 

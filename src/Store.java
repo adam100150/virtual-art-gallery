@@ -6,15 +6,18 @@
  * @artist Alice Zhang
  * CIS 22C Final Project
  */
-package src;
-import java.util.*;
-import java.io.*;
 
-public class Store
-{
-	private  final int NUM_CUSTOMERS = 7;
+package src;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Store {
 	private  final int NUM_ORDERS = 100;
 	private PriorityComparator pc;
+	private NameComparator nC;
+	private ValueComparator vC;
 
 	private static BST<Painting> painting_name = new BST<>();
 	private static BST<Painting> painting_value = new BST<>();
@@ -26,14 +29,9 @@ public class Store
 	private Heap<Order> ordersRushed;
 	private Heap<Order> ordersOvernight;
 
-	private List<Order> unshippedOrders;
 	private List<Order> shippedOrders;
 
-	private NameComparator nC;
-	private ValueComparator vC;
-
-	public Store()
-	{
+	public Store() {
 		pc = new PriorityComparator();
 		nC = new NameComparator();
 		vC = new ValueComparator();
@@ -43,7 +41,6 @@ public class Store
 		ordersRushed = new Heap<>(NUM_ORDERS, pc);
 		ordersOvernight = new Heap<>(NUM_ORDERS, pc);
 
-		unshippedOrders = new List<>();
 		shippedOrders = new List<>();
 
 		try {
@@ -51,13 +48,13 @@ public class Store
 			readCustomersFile();
 			readEmployeesFile();
 			buildOrders();
-		}catch(FileNotFoundException e) {
+		} catch(FileNotFoundException e) {
 			System.out.println("Could not find file.");
 			e.printStackTrace();
 		}
 	}
 
-	public void buildPaintings() throws FileNotFoundException {
+	void buildPaintings() throws FileNotFoundException {
 		String title, artist, description;
 		double price;
 		int year;
@@ -82,7 +79,6 @@ public class Store
 	}
 
 	void readCustomersFile() throws FileNotFoundException{
-
 		String userName, password, firstName, lastName, email, address;
 		double cash;
 
@@ -128,18 +124,16 @@ public class Store
 		input.close();
 	}
 
-	public void buildOrders() throws FileNotFoundException {
-		String user, password, painting, date;
+	void buildOrders() throws FileNotFoundException {
+		String user, painting, date;
 		int speed;
 		boolean ship;
 
 		File file = new File("src/text-files/Orders.txt");
 		Scanner input = new Scanner(file);
-		while(input.hasNextLine())
-		{
+		while(input.hasNextLine()) {
 			date = input.nextLine();
 			user = input.nextLine();
-			password = input.nextLine();
 			painting = input.nextLine();
 			speed = input.nextInt();
 			ship = input.nextBoolean();
@@ -149,83 +143,57 @@ public class Store
 			Painting tempPaint = painting_name.search(new Painting(painting), nC);
 			Order tempOrder = new Order(tempCust, date, tempPaint, speed,ship);
 			tempCust.addOrder(tempOrder);
-			
-			if(speed == 1 && ship!= true)
-				ordersStandard.insert(tempOrder);
-			else if(speed == 2 && ship!= true)
-				ordersRushed.insert(tempOrder);
-			else if(speed == 3 && ship!= true)
-				ordersOvernight.insert(tempOrder);
-			
-			if(ship == true)
+
+			if(ship) {
 				shippedOrders.addLast(tempOrder);
-			else
-				unshippedOrders.addLast(tempOrder);
+			} else if(speed == Shipping.STANDARD.ordinal()) {
+				ordersStandard.insert(tempOrder);
+			} else if(speed == Shipping.RUSHED.ordinal()) {
+				ordersRushed.insert(tempOrder);
+			} else if(speed == Shipping.OVERNIGHT.ordinal()) {
+				ordersOvernight.insert(tempOrder);
+			}
 		}
 		input.close();
 	}
-	public Painting searchPaintingName(Painting painting)
-	{
+
+	Painting searchPaintingName(Painting painting) {
 		return painting_name.search(painting, nC);
 	}
-	public Painting searchPaintingPrice(Painting painting) { return painting_name.search(painting, vC); }
-	public void printPaintingsByName()
-	{
+
+	Painting searchPaintingPrice(Painting painting) { return painting_name.search(painting, vC); }
+
+	void printPaintingsByName() {
 		painting_name.inOrderPrint();
 	}
 
-	public void printPaintingsByValue()
-	{
+	void printPaintingsByValue() {
 		painting_value.inOrderPrint();
 	}
 
-	public Customer searchCustomer(Customer cust)
-	{
-		return customers.get(cust);
-	}
-	public boolean containsCustomer(String username)
-	{
-		return customers.containsKey(username);
-	}
-	public void addCustomer(Customer cust) {
-		customers.putIfAbsent(cust.getUserName(), cust);
-	}
+	void placeOrder(Order order) {
+		Customer orderCustomer = order.getCustomer();
+		if(order.getShippingSpeed() == Shipping.OVERNIGHT.ordinal()) {
+			ordersOvernight.insert(order);
+		} else if(order.getShippingSpeed() == Shipping.RUSHED.ordinal()) {
+			ordersRushed.insert(order);
+		} else if(order.getShippingSpeed() == Shipping.STANDARD.ordinal()) {
+			ordersStandard.insert(order);
+		}
 
-	Customer getCustomer(String username) {
-		return customers.get(username);
-	}
-
-	public void placeOrder(Order order)
-	{
-		Customer temp = order.getCustomer();
-			if(order.getShippingSpeed() == 3)
-			{
-				ordersOvernight.insert(order);
-			}
-			else if(order.getShippingSpeed() == 2)
-			{
-				ordersRushed.insert(order);
-			}
-			else if(order.getShippingSpeed() == 1)
-			{
-				ordersStandard.insert(order);
-			}
-
-			Painting tempPainting = order.getOrderContents();
-			temp.addPainting(tempPainting);
-			Double price = tempPainting.getPrice();
-			temp.updateCash(-price);
-			unshippedOrders.addLast(order);
-			temp.addOrder(order);
+		Painting tempPainting = order.getOrderContents();
+		temp.addPainting(tempPainting);
+		Double price = tempPainting.getPrice();
+		temp.updateCash(-price);
+		temp.addOrder(order);
 			
-			String fileName = "Customers.txt";
-			File tempFile = new File("tempfileC.txt");
-			try {
-				BufferedReader reader = new BufferedReader(new FileReader(fileName));
-				BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-				PrintWriter out = new PrintWriter(writer);
-				String currentLine;
-
+		String fileName = "Customers.txt";
+		File tempFile = new File("tempfileC.txt");
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+			PrintWriter out = new PrintWriter(writer);
+			String currentLine;
 				while ((currentLine = reader.readLine()) != null) {
 					if (currentLine.equals(temp.getUserName())) {
 						out.println(currentLine);
