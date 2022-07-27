@@ -58,7 +58,24 @@ public class Customer extends User {
 
 		myPaintingsByTitle.insert(painting, c);
 		myPaintingsByValue.insert(painting, v);	
-	}	
+	}
+
+	//						fileName = "Paintings.txt";
+//						try {
+//							BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+//							PrintWriter out = new PrintWriter(writer);
+//							out.println();
+//							out.println(title);
+//							out.println(artist);
+//							out.println(year);
+//							out.println(price);
+//							out.print(description);
+//							out.close();
+//						}
+//						catch(IOException e)
+//						{
+//							e.printStackTrace();
+//						}
 	
 	public void setCash(double cash) {
 		this.cash = cash;

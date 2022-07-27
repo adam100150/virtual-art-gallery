@@ -168,10 +168,7 @@ public class Store
 	{
 		return painting_name.search(painting, nC);
 	}
-	public Painting searchPaintingPrice(Painting painting)
-	{
-		return painting_name.search(painting, vC);
-	}
+	public Painting searchPaintingPrice(Painting painting) { return painting_name.search(painting, vC); }
 	public void printPaintingsByName()
 	{
 		painting_name.inOrderPrint();
@@ -189,14 +186,6 @@ public class Store
 	public boolean containsCustomer(String username)
 	{
 		return customers.containsKey(username);
-	}
-	public void displayCustomer(Customer cust)
-	{
-		System.out.print(customers.get(cust.getUserName()));
-	}
-	public void displayCustomers()
-	{
-		System.out.println(customers);
 	}
 	public void addCustomer(Customer cust) {
 		customers.putIfAbsent(cust.getUserName(), cust);
@@ -269,8 +258,27 @@ public class Store
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 	}
+	//TODO: Add this code to addOrder
+
+
+	//							fileName = "Orders.txt";
+//							try {
+//								BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
+//								PrintWriter out = new PrintWriter(writer);
+//								out.println();
+//								out.println(timeStamp);
+//								out.println(currentCustomer.getUserName());
+//								out.println(currentCustomer.getPassword());
+//								out.println(currentPainting.getTitle());
+//								out.println(speedIntInput);
+//								out.print(false);
+//								out.close();
+//							} catch (IOException e) {
+//								e.printStackTrace();
+//							}
+//						}
+//					}
 
 	public void shipOrder()
 	{
@@ -535,11 +543,16 @@ public class Store
 		painting_value.insert(painting, vC);
 	}
 
-	public void removePainting(Painting painting)
-	{
+	//TODO: Add painting to painting database
+
+	public void removePainting(Painting painting) throws ArtGalleryException {
 		System.out.println("Painting removed: " + painting);
+		if (painting_name.search(painting, nC) == null) {
+			throw new ArtGalleryException("Painting not found");
+		}
 		painting_name.remove(painting, nC);
 		painting_value.remove(painting, vC);
-
 	}
+
+	//TODO: Remove painting from database
 }
