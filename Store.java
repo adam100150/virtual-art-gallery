@@ -37,6 +37,7 @@ public class Store
 		nC = new NameComparator();
 		vC = new ValueComparator();
 		customers = new HashMap<>();
+		employees = new HashMap<>();
 		ordersStandard = new Heap<>(NUM_ORDERS, pc);
 		ordersRushed = new Heap<>(NUM_ORDERS, pc);
 		ordersOvernight = new Heap<>(NUM_ORDERS, pc);
@@ -47,6 +48,7 @@ public class Store
 		try {
 			buildPaintings();
 			readCustomersFile();
+			readEmployeesFile();
 			buildOrders();
 		}catch(FileNotFoundException e) {
 			System.out.println("Could not find file.");
@@ -113,9 +115,8 @@ public class Store
 		while(input.hasNextLine()) {
 			username = input.nextLine();
 			password = input.nextLine();
-			firstName = input.next();
-			lastName = input.next();
-			input.nextLine();
+			firstName = input.nextLine();
+			lastName = input.nextLine();
 
 			if(input.hasNextLine()) {
 				input.nextLine();

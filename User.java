@@ -66,12 +66,12 @@ public abstract class User {
 		System.out.println("At least one digit [0-9]\n" +
 				"At least one lowercase character [a-z]\n" +
 				"At least one uppercase character [A-Z]\n" +
-				"At least one special character [*.!@#$%^&(){}[]:;<>,.?/~_+-=|\\]\n" +
+				"At least one special character [*.!@#$%^&:;<>,.?/~_+-=|\\]\n" +
 				"At least 8 characters in length, but no more than 32.");
 
 		try {
 			String password = input.nextLine();
-			checkForValidInput("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*.!@$%^&:;<>,.?/~_+-=|\\]).{8,32}$", password, "password", input);
+			checkForValidInput("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).{4,12}$", password, "password", input);
 			currentCustomer.setPassword(password);
 			System.out.print("Enter your first name: ");
 			String firstName = input.nextLine();
@@ -83,11 +83,11 @@ public abstract class User {
 			currentCustomer.setLastName(lastName);
 			System.out.print("Enter your Email: ");
 			String email = input.nextLine();
-			checkForValidInput("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$\n", email, "Email", input);
+			checkForValidInput("^[A-Za-z0-9+_.-]+@(.+)$", email, "Email", input);
 			currentCustomer.setEmail(email);
 			System.out.print("Enter your address: ");
 			String address = input.nextLine();
-			checkForValidInput("\"^(\\\\d{1,}) [a-zA-Z0-9\\\\s]+(\\\\,)? [a-zA-Z]+(\\\\,)? [A-Z]{2} [0-9]{5,6}$\"", address, "Address", input);
+			checkForValidInput("^[ \\w]{3,}([A-Za-z]\\.)?([ \\w]*\\#\\d+)?(\\r\\n| )[ \\w]{3,},\\x20[A-Za-z]{2}\\x20\\d{5}(-\\d{4})?$", address, "Address", input);
 			currentCustomer.setAddress(address);
 			System.out.print("Enter the amount of cash to fund your account: ");
 			String cash = input.nextLine();
