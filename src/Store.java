@@ -6,6 +6,7 @@
  * @artist Alice Zhang
  * CIS 22C Final Project
  */
+package src;
 import java.util.*;
 import java.io.*;
 
@@ -61,7 +62,7 @@ public class Store
 		double price;
 		int year;
 
-		File file = new File("Paintings.txt");
+		File file = new File("src/text-files/Paintings.txt");
 		Scanner input = new Scanner(file);
 		while(input.hasNextLine()) {
 			title = input.nextLine();
@@ -85,7 +86,7 @@ public class Store
 		String userName, password, firstName, lastName, email, address;
 		double cash;
 
-		File file = new File("Customers.txt");
+		File file = new File("src/text-files/Customers.txt");
 		Scanner input = new Scanner(file);
 		while(input.hasNextLine()) {
 			userName = input.nextLine();
@@ -110,7 +111,7 @@ public class Store
 	void readEmployeesFile() throws FileNotFoundException{
 		String username, password, firstName, lastName;
 
-		File file = new File("Employees.txt");
+		File file = new File("src/text-files/Employees.txt");
 		Scanner input = new Scanner(file);
 		while(input.hasNextLine()) {
 			username = input.nextLine();
@@ -132,7 +133,7 @@ public class Store
 		int speed;
 		boolean ship;
 
-		File file = new File("Orders.txt");
+		File file = new File("src/text-files/Orders.txt");
 		Scanner input = new Scanner(file);
 		while(input.hasNextLine())
 		{

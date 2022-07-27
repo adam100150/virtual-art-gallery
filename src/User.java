@@ -1,3 +1,13 @@
+/**
+ * CustomerInterface.java
+ * @author Nathan Brin
+ * @author Adam Ashkenazi
+ * @author Sihan Sun
+ * @author Alice Zhang
+ * CIS 22C Final Project
+ */
+
+package src;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 import java.util.Scanner;
@@ -5,14 +15,6 @@ import java.util.Scanner;
 import static java.lang.System.exit;
 import static java.lang.System.in;
 
-/**
- * CustomerInterface.java
- * @artist Nathan Brin
- * @artist Adam Ashkenazi
- * @artist Sihan Sun
- * @artist Alice Zhang
- * CIS 22C Final Project
- */
 public abstract class User {
 	protected String userName;
 	protected String password;

@@ -7,7 +7,7 @@
  * CIS 22C Final Project
  */
 
-
+package src;
 import java.util.ArrayList;
 
 public class HashTable<T> {

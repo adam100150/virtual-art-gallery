@@ -5,7 +5,7 @@
  * @artist Alice
  * CIS 22C Final Lab
  */
-
+package src;
 import java.text.DecimalFormat;
 import java.util.Comparator;
 

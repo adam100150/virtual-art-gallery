@@ -6,6 +6,7 @@
  * @artist Alice Zhang
  * CIS 22C Final Project
  */
+package src;
 import java.util.ArrayList;
 import java.util.Comparator;
 

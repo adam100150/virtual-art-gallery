@@ -6,6 +6,7 @@
  * @artist Alice Zhang
  * CIS 22C Final Project
  */
+package src;
 public class Employee extends User {
 
 	

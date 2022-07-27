@@ -6,7 +6,7 @@
  * @artist Alice Zhang
  * CIS 22C Final Project
  */
-
+package src;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
