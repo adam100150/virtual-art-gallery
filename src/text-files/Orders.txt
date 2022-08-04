@@ -1,25 +1,25 @@
 Mon, 21 Jun 2021 16:54:16
 jackyJ
 Mona Lisa
-1
-false
+STANDARD
+true
 Tue, 22 Jun 2021 22:40:58
 jackyJ
 Mona Lisa
-2
-false
+RUSHED
+true
 Wed, 23 Jun 2021 19:19:15
 gina256
 Mona Lisa
-2
-false
+RUSHED
+true
 Wed, 23 Jun 2021 19:24:39
 gina256
 Les Demoiselles d'Avignon
-1
-false
+STANDARD
+true
 Mon, 21 Jun 2021 16:30:16
 gina256
 The Starry Night
-2
+RUSHED
 true

@@ -1,5 +1,12 @@
 package src;
 
 public enum Shipping {
-    STANDARD, RUSHED, OVERNIGHT
+    STANDARD(5),
+    RUSHED(2),
+    OVERNIGHT(1);
+
+    int days;
+    Shipping(int days) {
+        this.days = days;
+    }
 }

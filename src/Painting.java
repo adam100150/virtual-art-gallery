@@ -9,8 +9,8 @@ package src;
 import java.text.DecimalFormat;
 import java.util.Comparator;
 
-public class Painting 
-{
+public class Painting {
+	Customer owner;
 	private final String title;
 	private final String artist;
 	private final int year;

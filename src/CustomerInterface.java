@@ -41,6 +41,7 @@ public class CustomerInterface {
 					currUser = User.loginAsCustomer(input, store);
 				} catch (ArtGalleryException e) {
 					System.err.println(e.getMessage());
+					exit(0);
 				}
 				break;
 			case '2':
@@ -48,6 +49,7 @@ public class CustomerInterface {
 					currUser = User.createCustomerAccount(input, store);
 				} catch (ArtGalleryException e) {
 					System.err.println(e.getMessage());
+					exit(0);
 				}
 				break;
 			case '3':
@@ -55,6 +57,7 @@ public class CustomerInterface {
 					currUser = User.loginAsEmployee(input, store);
 				} catch (ArtGalleryException e) {
 					System.err.println(e.getMessage());
+					exit(0);
 				}
 				break;
 			case '4':
@@ -183,13 +186,12 @@ public class CustomerInterface {
 				case 'H':
 					System.out.println("What is the name of the painting to be removed?");
 					String removeTitle = input.nextLine();
-						currentPainting = new Painting(removeTitle);
-						currentPainting = store.searchPaintingName(currentPainting);
-						try {
-							store.removePainting(currentPainting);
-						} catch (ArtGalleryException e) {
-							System.out.println(e.getMessage());
-						}
+					currentPainting = store.searchPaintingName(removeTitle);
+					try {
+						store.removePainting(currentPainting);
+					} catch (ArtGalleryException e) {
+						System.out.println(e.getMessage());
+					}
 					break;
 				default:
 					System.out.println("\nInvalid choice");
@@ -208,9 +210,9 @@ public class CustomerInterface {
 	}
 
 	static void printDefaultEmployee() {
-		File guestFile = new File("src/text-files/menus/DefaultGuestEmployee.txt");
+		File employeeFile = new File("src/text-files/menus/DefaultEmployeeMenu.txt");
 		try {
-			System.out.print(Utils.readContentsAsString(guestFile));
+			System.out.print(Utils.readContentsAsString(employeeFile));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -229,7 +231,7 @@ public class CustomerInterface {
 		System.out.println("What is the title of the painting that you would like to purchase?");
 		input.nextLine();
 		String stringInput = input.nextLine();
-		Painting currentPainting = store.searchPaintingName(new Painting(stringInput));
+		Painting currentPainting = store.searchPaintingName(stringInput);
 
 		if (currentPainting == null) {
 			throw new ArtGalleryException("Sorry we do not have that painting at the moment.");
@@ -248,8 +250,24 @@ public class CustomerInterface {
 			throw new ArtGalleryException("Customer doesn't have enough money in account");
 		}
 
+		Shipping shippingSpeed = null;
+		switch (speedIntInput) {
+			case 1:
+				shippingSpeed = Shipping.STANDARD;
+				break;
+			case 2:
+				shippingSpeed = Shipping.RUSHED;
+				break;
+			case 3:
+				shippingSpeed = Shipping.OVERNIGHT;
+				break;
+			default:
+				System.out.println("Invalid input");
+				break;
+		}
+
 		String timeStamp = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
-		return new Order(currCustomer, timeStamp, currentPainting, speedIntInput, false);
+		return new Order(currCustomer, timeStamp, currentPainting, shippingSpeed, false);
 	}
 
 	static void viewPurchases(Customer currCustomer) {
@@ -273,8 +291,8 @@ public class CustomerInterface {
 
 	static void searchForPaintingsPrice() {
 		System.out.println("Enter the price of the painting you are looking for: ");
-		String paintingPrice = input.nextLine();
-		Painting currentPainting = store.searchPaintingPrice(new Painting(Double.parseDouble(paintingPrice)));
+		double paintingPrice = Double.parseDouble(input.nextLine());
+		Painting currentPainting = store.searchPaintingPrice(paintingPrice);
 		if (currentPainting != null) {
 			System.out.println(currentPainting);
 		} else {
@@ -285,7 +303,7 @@ public class CustomerInterface {
 	static void searchForPaintingsTitle() {
 		System.out.println("Enter the name of the painting you are looking for: ");
 		String paintingName = input.nextLine();
-		Painting currentPainting = store.searchPaintingName(new Painting(Double.parseDouble(paintingName)));
+		Painting currentPainting = store.searchPaintingName(paintingName);
 		if (currentPainting != null) {
 			System.out.println(currentPainting);
 		} else {

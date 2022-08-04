@@ -7,23 +7,27 @@
  * CIS 22C Final Project
  */
 package src;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Comparator;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingDeque;
 
-public class BST<T>{
-   private class Node {
-      private T data;
-      private Node left;
-      private Node right;
+class Node<T> {
+    T data;
+    Node<T> left;
+    Node<T> right;
 
-      public Node(T data) {
-         this.data = data;
-         left = null;
-         right = null;
-      }
-   }
+    public Node(T data) {
+        this.data = data;
+        left = null;
+        right = null;
+    }
+}
 
-   private Node root;
+public class BST<T> implements Iterable {
+
+   Node<T> root;
 
    /***CONSTRUCTORS***/
 
@@ -56,7 +60,7 @@ public class BST<T>{
    * data to copy
    * @param c the way the tree is organized
    */
-   private void copyHelper(Node node, Comparator<T> c) { //O(log(n))
+   private void copyHelper(Node<T> node, Comparator<T> c) {
       if(node == null) {
         return;
       } else {
@@ -110,7 +114,7 @@ public class BST<T>{
     * @param node the current node to count
     * @return the size of the tree
     */
-    private int getSize(Node node) {
+    private int getSize(Node<T> node) {
       if(node == null)
       {
         return 0;
@@ -165,7 +169,7 @@ public class BST<T>{
    * if it is the smallest
    * @return the smallest value in the tree
    */
-   private T findMin(Node node)
+   private T findMin(Node<T> node)
    {
      if(node.left == null)
      {
@@ -197,7 +201,7 @@ public class BST<T>{
    * if it is the largest
    * @return the largest value in the tree
    */
-   private T findMax(Node node) {
+   private T findMax(Node<T> node) {
     if(node.right == null)
      {
        return node.data;
@@ -231,7 +235,7 @@ public class BST<T>{
    * @return the data stored in that Node
    * of the tree is found or null otherwise
    */
-   private T search(T data, Node node, Comparator<T> c) {
+   private T search(T data, Node<T> node, Comparator<T> c) {
       if(node == null){
         return null;
       }
@@ -272,7 +276,7 @@ public class BST<T>{
    * @param c the Comparator indicating
    * how data in the tree is ordered
    */
-   private void insert(T data, Node node, Comparator<T> c)
+   private void insert(T data, Node<T> node, Comparator<T> c)
    {
       if(c.compare(data,node.data) <= 0)
       {
@@ -318,7 +322,7 @@ public class BST<T>{
 	 * @param c    the Comparator indicating how data in the tree is organized
 	 * @return an updated reference variable
 	 */
-	private Node remove(T data, Node node, Comparator<T> c) {
+	private Node remove(T data, Node<T> node, Comparator<T> c) {
 		if(node == null) { 
 			return node;
 		}else if(c.compare(data, node.data)<0) {
@@ -443,4 +447,34 @@ public class BST<T>{
       System.out.println();
     }
 
-  }
+    public BSTIterator<T> iterator() {
+       return new BSTIterator<T>(this);
+    }
+
+}
+
+class BSTIterator<E> implements Iterator<E> {
+    private Queue<E> paintingsInOrder = new LinkedBlockingDeque<E>();
+    public BSTIterator(BST currBST) {
+        helper(currBST.root);
+    }
+
+    void helper(Node<E> currNode) {
+        if (currNode == null) {
+            return;
+        }
+        helper(currNode.left);
+        paintingsInOrder.add(currNode.data);
+        helper(currNode.right);
+    }
+
+    @Override
+    public boolean hasNext() {
+        return paintingsInOrder.isEmpty();
+    }
+
+    @Override
+    public E next() {
+        return paintingsInOrder.poll();
+    }
+}

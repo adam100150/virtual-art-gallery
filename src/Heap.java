@@ -9,8 +9,9 @@
 package src;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 
-public class Heap<T> {
+public class Heap<T> implements Iterable {
 	//private T[] heap;
 	private ArrayList<T> heap;
 	private Comparator<T> c;
@@ -104,4 +105,8 @@ public class Heap<T> {
     public String toString() {
     	return heap.toString();
     }
+
+	public Iterator<T> iterator() {
+		return heap.iterator();
+	}
 }

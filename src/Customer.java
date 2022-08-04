@@ -8,17 +8,13 @@
  */
 package src;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class Customer extends User {
 	private String email;
 	private String address;
 	private double cash;
-	
-	private List<Order> orders = new List<>();
-	
-	private BST<Painting> myPaintingsByTitle = new BST<>();
-	private BST<Painting> myPaintingsByValue = new BST<>();
-		
+
 	//Constructor with all values given
 	public Customer(String userName, String password, String firstName, String lastName, String email, String address, double cash) {
 		super(userName, password, firstName, lastName);
@@ -50,15 +46,6 @@ public class Customer extends User {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-	public void addPainting(Painting painting) 
-	{
-		NameComparator c = new NameComparator();
-		ValueComparator v = new ValueComparator();
-
-		myPaintingsByTitle.insert(painting, c);
-		myPaintingsByValue.insert(painting, v);	
-	}
 
 	//						fileName = "Paintings.txt";
 //						try {
@@ -84,27 +71,42 @@ public class Customer extends User {
 	public void updateCash(double cash) {
 		this.cash += cash;
 	}
-	
+
 	public void printPaintingByTitle() {
-		myPaintingsByTitle.inOrderPrint();
+		for (var p : Store.painting_name) {
+			Painting currPainting = (Painting) p;
+			if (currPainting.owner.equals(userName)) {
+				System.out.println(currPainting);
+			}
+		}
 	}
 	
 	public void printPaintingByValue() {
-		myPaintingsByValue.inOrderPrint();
+		for (var p : Store.painting_name) {
+			Painting currPainting = (Painting) p;
+			if (currPainting.owner.equals(userName)) {
+				System.out.println(currPainting);
+			}
+		}
 	}
-	
-	public void addOrder(Order order)
-	{
-		orders.addLast(order);
+
+	ArrayList<Order> getOrders() {
+		ArrayList<Order> customerOrders = new ArrayList<Order>();
+		for (var order : Store.orders) {
+			Order currOrder = (Order) order;
+			if (currOrder.getCustomer().userName.equals(userName)) {
+				customerOrders.add(currOrder);
+			}
+		}
+		return customerOrders;
 	}
 	
 	@Override
-	public String toString() 
-	{
+	public String toString() {
 		String result = "\nName: " + getFirstName() + " " + getLastName() + "\nUserName: " + getUserName() + "\nTotal Cash: $"
 				+ new DecimalFormat("###,###,###.##").format(cash)+ "\n";
-		if(!orders.isEmpty())
-			result += "\nOrder History:\n" + orders + "\n";
+		if(!getOrders().isEmpty())
+			result += "\nOrder History:\n" + getOrders() + "\n";
 		return result;
 	}
 	

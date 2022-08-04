@@ -8,8 +8,12 @@
  */
 
 package src;
+import java.awt.*;
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -19,15 +23,13 @@ public class Store {
 	private NameComparator nC;
 	private ValueComparator vC;
 
-	private static BST<Painting> painting_name = new BST<>();
-	private static BST<Painting> painting_value = new BST<>();
+	static BST<Painting> painting_name = new BST<>();
+	static BST<Painting> painting_value = new BST<>();
 
 	HashMap<String, Customer> customers;
 	HashMap<String, Employee> employees;
 
-	private Heap<Order> ordersStandard;
-	private Heap<Order> ordersRushed;
-	private Heap<Order> ordersOvernight;
+	static Heap<Order> orders;
 
 	private List<Order> shippedOrders;
 
@@ -37,10 +39,7 @@ public class Store {
 		vC = new ValueComparator();
 		customers = new HashMap<>();
 		employees = new HashMap<>();
-		ordersStandard = new Heap<>(NUM_ORDERS, pc);
-		ordersRushed = new Heap<>(NUM_ORDERS, pc);
-		ordersOvernight = new Heap<>(NUM_ORDERS, pc);
-
+		orders = new Heap<>(NUM_ORDERS, pc);
 		shippedOrders = new List<>();
 
 		try {
@@ -124,9 +123,9 @@ public class Store {
 		input.close();
 	}
 
-	void buildOrders() throws FileNotFoundException {
+	void buildOrders() throws FileNotFoundException, IllegalArgumentException {
 		String user, painting, date;
-		int speed;
+		Shipping speed;
 		boolean ship;
 
 		File file = new File("src/text-files/Orders.txt");
@@ -135,33 +134,33 @@ public class Store {
 			date = input.nextLine();
 			user = input.nextLine();
 			painting = input.nextLine();
-			speed = input.nextInt();
+			speed = Shipping.valueOf(input.nextLine());
 			ship = input.nextBoolean();
 			if(input.hasNextLine())
 				input.nextLine();
+
 			Customer tempCust = customers.get(user);
 			Painting tempPaint = painting_name.search(new Painting(painting), nC);
 			Order tempOrder = new Order(tempCust, date, tempPaint, speed,ship);
-			tempCust.addOrder(tempOrder);
 
 			if(ship) {
 				shippedOrders.addLast(tempOrder);
-			} else if(speed == Shipping.STANDARD.ordinal()) {
-				ordersStandard.insert(tempOrder);
-			} else if(speed == Shipping.RUSHED.ordinal()) {
-				ordersRushed.insert(tempOrder);
-			} else if(speed == Shipping.OVERNIGHT.ordinal()) {
-				ordersOvernight.insert(tempOrder);
+			} else {
+				orders.insert(tempOrder);
 			}
 		}
 		input.close();
 	}
 
-	Painting searchPaintingName(Painting painting) {
-		return painting_name.search(painting, nC);
+	Painting searchPaintingName(String name) {
+		Painting currPainting = new Painting(name);
+		return painting_name.search(currPainting, nC);
 	}
 
-	Painting searchPaintingPrice(Painting painting) { return painting_name.search(painting, vC); }
+	Painting searchPaintingPrice(double price) {
+		Painting currPainting = new Painting(price);
+		return painting_name.search(currPainting, vC);
+	}
 
 	void printPaintingsByName() {
 		painting_name.inOrderPrint();
@@ -172,337 +171,133 @@ public class Store {
 	}
 
 	void placeOrder(Order order) {
-		Customer orderCustomer = order.getCustomer();
-		if(order.getShippingSpeed() == Shipping.OVERNIGHT.ordinal()) {
-			ordersOvernight.insert(order);
-		} else if(order.getShippingSpeed() == Shipping.RUSHED.ordinal()) {
-			ordersRushed.insert(order);
-		} else if(order.getShippingSpeed() == Shipping.STANDARD.ordinal()) {
-			ordersStandard.insert(order);
-		}
+		orders.insert(order);
 
-		Painting tempPainting = order.getOrderContents();
-		temp.addPainting(tempPainting);
-		Double price = tempPainting.getPrice();
-		temp.updateCash(-price);
-		temp.addOrder(order);
-			
-		String fileName = "Customers.txt";
-		File tempFile = new File("tempfileC.txt");
+		Customer orderCustomer  = order.getCustomer();
+		orderCustomer.updateCash(-order.getOrderContents().getPrice());
+
+		String fileName = "src/test-files/Orders.txt";
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(fileName));
-			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
 			PrintWriter out = new PrintWriter(writer);
-			String currentLine;
-				while ((currentLine = reader.readLine()) != null) {
-					if (currentLine.equals(temp.getUserName())) {
-						out.println(currentLine);
-						currentLine = reader.readLine();
-						out.println(currentLine);
-						currentLine = reader.readLine();
-						out.println(currentLine);
-						currentLine = reader.readLine();
-						out.println(currentLine);
-						currentLine = reader.readLine();
-						out.println(currentLine);
-						currentLine = reader.readLine();
-						out.println(temp.getCash());
-					} else {
-						out.println(currentLine);
-					}
-				}
-				reader.close();
-				out.close();
-
-				reader = new BufferedReader(new FileReader(tempFile));
-				writer = new BufferedWriter(new FileWriter(fileName));
-				out = new PrintWriter(writer);
-
-				while ((currentLine = reader.readLine()) != null) {
-					out.println(currentLine);
-				}
-				reader.close();
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	}
-	//TODO: Add this code to addOrder
-
-
-	//							fileName = "Orders.txt";
-//							try {
-//								BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
-//								PrintWriter out = new PrintWriter(writer);
-//								out.println();
-//								out.println(timeStamp);
-//								out.println(currentCustomer.getUserName());
-//								out.println(currentCustomer.getPassword());
-//								out.println(currentPainting.getTitle());
-//								out.println(speedIntInput);
-//								out.print(false);
-//								out.close();
-//							} catch (IOException e) {
-//								e.printStackTrace();
-//							}
-//						}
-//					}
-
-	public void shipOrder()
-	{
-		if(!ordersOvernight.isEmpty())
-		{
-			Order currentOrder = ordersOvernight.pop();
-			Customer currentCust = currentOrder.getCustomer();
-			currentCust.addPainting(currentOrder.getOrderContents());
-			System.out.println("\nOrder Shipped: " + currentOrder);
-			shippedOrders.addLast(currentOrder);
-			int index = unshippedOrders.linearSearch(currentOrder);
-			unshippedOrders.iteratorToIndex(index);
-			unshippedOrders.removeIterator();
-			currentOrder.ship();
-			
-			String fileName = "Orders.txt";
-			File tempFile = new File("tempfile.txt");
-			try {
-				BufferedReader reader = new BufferedReader(new FileReader(fileName));
-				BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-				PrintWriter out = new PrintWriter(writer);
-				String currentLine;
-
-				while ((currentLine = reader.readLine()) != null) {
-					if (currentLine.equals(currentOrder.getDate())) {
-						reader.readLine();
-						reader.readLine();
-						reader.readLine();
-						reader.readLine();
-						reader.readLine();
-					} else {
-						out.println(currentLine);
-					}
-				}
-				reader.close();
-				out.close();
-
-				reader = new BufferedReader(new FileReader(tempFile));
-				writer = new BufferedWriter(new FileWriter(fileName));
-				out = new PrintWriter(writer);
-
-				while ((currentLine = reader.readLine()) != null) {
-					out.println(currentLine);
-				}
-				reader.close();
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			fileName = "Orders.txt";
-			try {
-				BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
-				PrintWriter out = new PrintWriter(writer);
-				out.println(currentOrder.getDate());
-				out.println(currentCust.getUserName());
-				out.println(currentCust.getPassword());
-				out.println(currentOrder.getOrderContents().getTitle());
-				out.println(currentOrder.getShippingSpeed());
-				out.print(currentOrder.isShipped());
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			out.println();
+			out.println(order.getShippingDate());
+			out.println(order.getCustomer().userName);
+			out.println(order.getOrderContents().getTitle());
+			out.println(order.shippingSpeed);
+			out.println(order.shipped);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		else if(!ordersRushed.isEmpty())
-		{
-			Order currentOrder = ordersRushed.pop();
-			Customer currentCust = currentOrder.getCustomer();
-			currentCust.addPainting(currentOrder.getOrderContents());
-			System.out.println("\nOrder Shipped: " + currentOrder);
-			shippedOrders.addLast(currentOrder);
-			int index = unshippedOrders.linearSearch(currentOrder);
-			unshippedOrders.iteratorToIndex(index);
-			unshippedOrders.removeIterator();
-			currentOrder.ship();
-			
-			String fileName = "Orders.txt";
-			File tempFile = new File("tempfile.txt");
-			try {
-				BufferedReader reader = new BufferedReader(new FileReader(fileName));
-				BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-				PrintWriter out = new PrintWriter(writer);
-				String currentLine;
-
-				while ((currentLine = reader.readLine()) != null) {
-					if (currentLine.equals(currentOrder.getDate())) {
-						reader.readLine();
-						reader.readLine();
-						reader.readLine();
-						reader.readLine();
-						reader.readLine();
-					} else {
-						out.println(currentLine);
-					}
-				}
-				reader.close();
-				out.close();
-
-				reader = new BufferedReader(new FileReader(tempFile));
-				writer = new BufferedWriter(new FileWriter(fileName));
-				out = new PrintWriter(writer);
-
-				while ((currentLine = reader.readLine()) != null) {
-					out.println(currentLine);
-				}
-				reader.close();
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			fileName = "Orders.txt";
-			try {
-				BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
-				PrintWriter out = new PrintWriter(writer);
-				out.println(currentOrder.getDate());
-				out.println(currentCust.getUserName());
-				out.println(currentCust.getPassword());
-				out.println(currentOrder.getOrderContents().getTitle());
-				out.println(currentOrder.getShippingSpeed());
-				out.print(currentOrder.isShipped());
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		else if(!ordersStandard.isEmpty())
-		{
-			Order currentOrder = ordersStandard.pop();
-			Customer currentCust = currentOrder.getCustomer();
-			currentCust.addPainting(currentOrder.getOrderContents());
-			System.out.println("\nOrder Shipped: " + currentOrder);
-			shippedOrders.addLast(currentOrder);
-			int index = unshippedOrders.linearSearch(currentOrder);
-			unshippedOrders.iteratorToIndex(index);
-			unshippedOrders.removeIterator();
-			currentOrder.ship();
-			
-			String fileName = "Orders.txt";
-			File tempFile = new File("tempfile.txt");
-			try {
-				BufferedReader reader = new BufferedReader(new FileReader(fileName));
-				BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-				PrintWriter out = new PrintWriter(writer);
-				String currentLine;
-
-				while ((currentLine = reader.readLine()) != null) {
-					if (currentLine.equals(currentOrder.getDate())) {
-						reader.readLine();
-						reader.readLine();
-						reader.readLine();
-						reader.readLine();
-						reader.readLine();
-					} else {
-						out.println(currentLine);
-					}
-				}
-				reader.close();
-				out.close();
-
-				reader = new BufferedReader(new FileReader(tempFile));
-				writer = new BufferedWriter(new FileWriter(fileName));
-				out = new PrintWriter(writer);
-
-				while ((currentLine = reader.readLine()) != null) {
-					out.println(currentLine);
-				}
-				reader.close();
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			fileName = "Orders.txt";
-			try {
-				BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
-				PrintWriter out = new PrintWriter(writer);
-				out.println(currentOrder.getDate());
-				out.println(currentCust.getUserName());
-				out.println(currentCust.getPassword());
-				out.println(currentOrder.getOrderContents().getTitle());
-				out.println(currentOrder.getShippingSpeed());
-				out.print(currentOrder.isShipped());
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		else
-			System.out.println("No orders to ship.");
 	}
 
-	public void viewUnshippedOrders()
-	{
-		if(unshippedOrders.isEmpty())
-			System.out.println("No orders to show.");
-		else
-		{
-			ArrayList<Order> list1 = ordersOvernight.sort();
-			ArrayList<Order> list2 = ordersRushed.sort();
-			ArrayList<Order> list3 = ordersStandard.sort();
-			list1.addAll(list2);
-			list1.addAll(list3);
-			System.out.println(list1);
+
+	public void shipOrder() {
+		Order currOrder = orders.pop();
+		shippedOrders.addLast(currOrder);
+		currOrder.shipped = true;
+
+		Customer currCustomer = currOrder.getCustomer();
+		Painting currPainting = currOrder.getOrderContents();
+		currPainting.owner = currCustomer;
+
+		String filename = "src/text-files/Orders.txt";
+		String tempFilename = "src/text-files/TempOrders.txt";
+		File orderFile = new File(filename);
+		File tempOrderFile = new File(tempFilename);
+
+		/*
+			This segment of the code copies the file contents to a temporary file and modifies only
+			the required lines
+		 */
+
+		try {
+			tempOrderFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			Scanner input = new Scanner(orderFile);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFilename, false));
+			PrintWriter out = new PrintWriter(writer);
+			String date;
+			while (input.hasNextLine()) {
+				date = input.nextLine();
+				out.println(date);
+				Date currDate = null;
+				try {
+					currDate = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss").parse(date);
+				} catch (ParseException p) {
+					p.printStackTrace();
+				}
+				if (currOrder.getShippingDate().equals(currDate)) {
+					for (int i = 0; i < Order.NUM_LINES_OF_ORDER - 1; i++) { // Copy the order as it is
+						out.println(input.nextLine());
+					}
+					out.println(true);  // Change the shipped info to true
+					input.nextLine();
+				} else { // Copy the order as it is to the temp file
+					for (int i = 0; i < Order.NUM_LINES_OF_ORDER; i++) {
+						out.println(input.nextLine());
+					}
+				}
+			}
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// Copy the correct contents from the temporary file to the Orders file
+		try {
+			String correctContent = Utils.readContentsAsString(tempOrderFile);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(filename, false));
+			PrintWriter out = new PrintWriter(writer);
+			out.print(correctContent);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		tempOrderFile.delete();
+	}
+
+	public void viewUnshippedOrders() {
+		for (var ord : orders) {
+			Order order = (Order) ord;
+			if (!order.shipped) {
+				System.out.println(order);
+			}
 		}
 	}
 
 	public void viewShippedOrders()
 	{
-		if(shippedOrders.isEmpty())
-			System.out.println("No orders to show.");
-		else
-			shippedOrders.printNumberedList();
+		for (var ord : orders) {
+			Order order = (Order) ord;
+			if (order.shipped) {
+				System.out.println(order);
+			}
+		}
 	}
 
-	public void viewUnshippedOrders(Customer cust)
-	{
-		if(unshippedOrders.isEmpty())
-		{
-			System.out.println("No orders to show.");
-		}
-		else
-		{
-			List<Order> temp = new List<>(); //temp is the list of orders the Customer placed
-			unshippedOrders.placeIterator();
-			for(int i = 1; i <=unshippedOrders.getLength(); i++)
-			{
-				Order tempOrder = unshippedOrders.getIterator();
-				if(tempOrder.getCustomer().equals(cust))
-					temp.addLast(tempOrder);
-				unshippedOrders.advanceIterator();
+	public void viewUnshippedOrders(Customer cust) {
+		for (var ord : orders) {
+			Order order = (Order) ord;
+			if (!order.shipped && order.getCustomer().equals(cust)) {
+				System.out.println(order);
 			}
-			temp.printNumberedList();
 		}
 	}
 
 	public void viewShippedOrders(Customer cust)
 	{
-		if(shippedOrders.isEmpty())
-			System.out.println("No orders to show.");
-		else
-		{
-			List<Order> temp = new List<>();
-			shippedOrders.placeIterator();
-			for(int i = 1; i <= shippedOrders.getLength(); i++)
-			{
-				Order tempOrder = shippedOrders.getIterator();
-				if(tempOrder.getCustomer().equals(cust))
-					temp.addLast(tempOrder);
-				shippedOrders.advanceIterator();
+		for (var ord : orders) {
+			Order order = (Order) ord;
+			if (order.shipped && order.getCustomer().equals(cust)) {
+				System.out.println(order);
 			}
-			if(temp.isEmpty())
-				System.out.println("No shipped orders.");
-			else
-				temp.printNumberedList();
 		}
 	}
 	public void addPainting(Painting painting)
