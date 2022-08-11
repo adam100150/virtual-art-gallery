@@ -8,11 +8,9 @@
  */
 
 package src;
-import java.awt.*;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -65,8 +63,7 @@ public class Store {
 			artist = input.nextLine();
 			year = input.nextInt();
 			input.nextLine();
-			price = input.nextFloat();
-			input.nextLine();
+			price = Double.parseDouble(input.nextLine());
 			description = input.nextLine();
 			if(input.hasNextLine()) {
 				input.nextLine();
@@ -300,13 +297,19 @@ public class Store {
 			}
 		}
 	}
-	public void addPainting(Painting painting)
-	{
+	public void addPainting(Painting painting) {
 		painting_name.insert(painting, nC);
 		painting_value.insert(painting, vC);
-	}
 
-	//TODO: Add painting to painting database
+		File paintingFile = new File("src/text-files/Painting.txt");
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(paintingFile, true));
+			PrintWriter out = new PrintWriter(writer);
+			out.print(painting);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void removePainting(Painting painting) throws ArtGalleryException {
 		System.out.println("Painting removed: " + painting);
@@ -315,7 +318,52 @@ public class Store {
 		}
 		painting_name.remove(painting, nC);
 		painting_value.remove(painting, vC);
-	}
 
-	//TODO: Remove painting from database
+		String tempFilename = "src/text-files/tempPainting.txt";
+		String filename = "src/text-files/Paintings.txt";
+		File tempPaintingsFile = new File(tempFilename);
+		File paintingFile = new File(filename);
+
+		try {
+			tempPaintingsFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			Scanner input = new Scanner(paintingFile);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFilename, false));
+			PrintWriter out = new PrintWriter(writer);
+			while (input.hasNextLine()) {
+				String currPainting = input.nextLine();
+				System.out.println("Curr Painting " + currPainting);
+				if (currPainting.equals(painting.getTitle())) {
+					for (int i = 0; i < Painting.NUM_LINES - 1; i++) { // Skip painting
+						input.nextLine();
+					}
+				} else { // Copy the painting as it is to the temp file
+					out.println(currPainting);
+					for (int i = 0; i < Painting.NUM_LINES - 1; i++) {
+						out.println(input.nextLine());
+					}
+				}
+			}
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// Copy the correct contents from the temporary file to the Orders file
+		try {
+			String correctContent = Utils.readContentsAsString(tempPaintingsFile);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(filename, false));
+			PrintWriter out = new PrintWriter(writer);
+			out.print(correctContent);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		tempPaintingsFile.delete();
+	}
 }

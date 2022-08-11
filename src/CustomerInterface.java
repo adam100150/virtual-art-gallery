@@ -21,7 +21,6 @@ public class CustomerInterface {
 	static char userInput;
 	static Scanner input = new Scanner(System.in);
 	static Store store = new Store();
-	static User currUser;
 
 	public static void main(String[] args) {
 		Painting currentPainting;
@@ -35,38 +34,28 @@ public class CustomerInterface {
 
 		userInput = input.nextLine().charAt(0);
 		User currUser = null;
-		switch (userInput) {
-			case '1':
-				try {
+		try {
+			switch (userInput) {
+				case '1':
 					currUser = User.loginAsCustomer(input, store);
-				} catch (ArtGalleryException e) {
-					System.err.println(e.getMessage());
-					exit(0);
-				}
-				break;
-			case '2':
-				try {
+					break;
+				case '2':
 					currUser = User.createCustomerAccount(input, store);
-				} catch (ArtGalleryException e) {
-					System.err.println(e.getMessage());
-					exit(0);
-				}
-				break;
-			case '3':
-				try {
+					break;
+				case '3':
 					currUser = User.loginAsEmployee(input, store);
-				} catch (ArtGalleryException e) {
-					System.err.println(e.getMessage());
+					break;
+				case '4':
+					System.out.println("Welcome! \n");
+					break;
+				default:
+					System.err.println("Invalid choice");
 					exit(0);
-				}
-				break;
-			case '4':
-				System.out.println("Welcome! \n");
-				break;
-			default:
-				System.err.println("Invalid choice");
-				exit(0);
-				break;
+					break;
+			}
+		} catch (ArtGalleryException e) {
+			System.err.println(e.getMessage());
+			exit(0);
 		}
 
 		if (currUser == null) {
@@ -171,7 +160,7 @@ public class CustomerInterface {
 						System.out.println("Who is the artist?");
 						artist = input.nextLine();
 						System.out.println("What year was this masterpiece created?");
-						year = input.nextInt();
+						year = Integer.parseInt(input.nextLine());
 						input.nextLine();
 						System.out.println("How much is corporate charging for this painting?");
 						price = input.nextDouble();

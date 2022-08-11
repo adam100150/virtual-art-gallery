@@ -1,0 +1,9 @@
+Please select from the following options:
+A. Search for a painting by price
+B. Search for a painting by title
+C. List available paintings by price
+D. List available paintings by title
+E. Place an Order
+F. View purchases
+X. Exit
+Enter your choice:

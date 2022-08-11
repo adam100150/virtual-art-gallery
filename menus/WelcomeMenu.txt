@@ -1,0 +1,6 @@
+Welcome to One-To-One Painting Replicas!
+Would you like to login as a Guest, Customer or an Employee or Create a new Account?
+(1) Login as a Customer
+(2) Create new Customer Account
+(3) Login as an Employee
+(4) Log in as Guest

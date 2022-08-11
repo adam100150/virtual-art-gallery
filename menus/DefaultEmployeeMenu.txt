@@ -1,0 +1,11 @@
+Please select from the following options:
+A. Search for a customer
+B. Display current customers
+C. View orders by priority
+D. Ship an order
+E. List database of products by price
+F. List database of products by value
+G. Add a product
+H. Remove a product
+X. Exit
+Enter your choice:

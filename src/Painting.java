@@ -16,6 +16,7 @@ public class Painting {
 	private final int year;
 	private double price;
 	private String description;
+	final static int NUM_LINES = 6;
 	
 	/**
 	* Constructor that assigns all values
