@@ -16,7 +16,7 @@ import static java.lang.System.exit;
  * CIS 22C Final Project
  */
 
-public class CustomerInterface {
+public class Main {
 
 	static char userInput;
 	static Scanner input = new Scanner(System.in);
