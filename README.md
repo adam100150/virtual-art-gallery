@@ -10,3 +10,13 @@ This is a project that simulates an art gallery. It is a console application tha
 * Employees can also search for customers by name
 * Employees can view all orders made by a costumer
 * Employees can ship orders
+
+## Build Instructions
+### Requirements
+Need to have Java installed.
+
+Compile all source files in the `src` directory using `javac` and use `java` to run `src.Main`
+```
+javac src/*.java
+java src.Main
+```
